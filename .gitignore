@@ -1,0 +1,77 @@
+# Target & Build directories
+target/
+**/target/
+build/
+dist/
+out/
+*.class
+
+# Maven
+.mvn/timing.properties
+.mvn/wrapper/maven-wrapper.jar
+
+# IntelliJ IDEA
+.idea/
+*.iml
+*.iws
+*.ipr
+out/
+
+# Eclipse
+.project
+.classpath
+.settings/
+.metadata/
+bin/
+tmp/
+
+# Visual Studio Code
+.vscode/
+
+# Python / ML Service
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+.venv/
+ENV/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Logs & Databases
+*.log
+logs/
+*.sql
+*.sqlite
+
+# Environment variables & Sensitive data
+.env
+.env.local
+.env.*.local
+*.pem
+*.key
+credentials.json
+
+# OS Specific
+.DS_Store
+Thumbs.db
+desktop.ini

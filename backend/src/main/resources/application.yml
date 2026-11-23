@@ -1,0 +1,55 @@
+server:
+  port: ${PORT:${SERVER_PORT:8080}}
+  servlet:
+    context-path: /
+
+spring:
+  application:
+    name: flexfit-backend
+
+  # Database configuration using environment variables
+  # Never hardcode sensitive credentials
+  datasource:
+    url: ${DB_URL:${SPRING_DATASOURCE_URL:jdbc:mysql://${DB_HOST:localhost}:${DB_PORT:3306}/${DB_NAME:flexfit_db}?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC&createDatabaseIfNotExist=true}}
+    username: ${DB_USER:${SPRING_DATASOURCE_USERNAME:root}}
+    password: ${DB_PASSWORD:${SPRING_DATASOURCE_PASSWORD:}}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    hikari:
+      pool-name: FlexFitHikariPool
+      minimum-idle: 1
+      maximum-pool-size: 10
+      idle-timeout: 30000
+      connection-timeout: 5000
+      max-lifetime: 1800000
+      initialization-fail-timeout: -1
+
+  jpa:
+    open-in-view: false
+    hibernate:
+      # Do not alter database schema automatically in Phase 1
+      ddl-auto: ${JPA_DDL_AUTO:none}
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: true
+
+# Spring Actuator configuration for monitoring
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+  endpoint:
+    health:
+      show-details: always
+      probes:
+        enabled: true
+
+# FlexFit custom properties
+flexfit:
+  api:
+    version: "v1"
+  ml-service:
+    url: ${ML_SERVICE_URL:http://localhost:8000}
+  cors:
+    allowed-origins: ${CORS_ALLOWED_ORIGINS:http://localhost:*,http://127.0.0.1:*}

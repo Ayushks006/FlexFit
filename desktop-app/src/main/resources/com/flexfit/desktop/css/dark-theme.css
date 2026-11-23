@@ -1,0 +1,282 @@
+/* ===================================================================
+   FLEXFIT - PROFESSIONAL DARK THEME & ELECTRIC BLUE DESIGN SYSTEM
+   =================================================================== */
+
+/* Root and Base Theme Variables */
+.root {
+    -fx-font-family: 'Segoe UI', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    -fx-background-color: #0A0D14;
+    -fx-text-fill: #E6EDF3;
+}
+
+/* ScrollPane Styling */
+.scroll-pane {
+    -fx-background-color: transparent;
+    -fx-background: transparent;
+}
+
+.scroll-pane > .viewport {
+    -fx-background-color: transparent;
+}
+
+.scroll-bar:vertical, .scroll-bar:horizontal {
+    -fx-background-color: transparent;
+}
+
+.scroll-bar:vertical .thumb, .scroll-bar:horizontal .thumb {
+    -fx-background-color: #21283B;
+    -fx-background-radius: 4px;
+}
+
+.scroll-bar:vertical .thumb:hover, .scroll-bar:horizontal .thumb:hover {
+    -fx-background-color: #00E5FF;
+}
+
+/* Background Gradients & Containers */
+.main-container {
+    -fx-background-color: #0A0D14;
+    -fx-padding: 30px;
+}
+
+/* Header Section */
+.brand-title {
+    -fx-font-size: 32px;
+    -fx-font-weight: 800;
+    -fx-fill: #FFFFFF;
+}
+
+.brand-accent {
+    -fx-fill: #00E5FF;
+}
+
+.brand-subtitle {
+    -fx-font-size: 13px;
+    -fx-fill: #8E9BAE;
+    -fx-font-weight: 500;
+}
+
+.badge-pill {
+    -fx-background-color: rgba(0, 229, 255, 0.12);
+    -fx-border-color: rgba(0, 229, 255, 0.4);
+    -fx-border-radius: 20px;
+    -fx-background-radius: 20px;
+    -fx-padding: 5px 14px;
+}
+
+.badge-text {
+    -fx-font-size: 11px;
+    -fx-font-weight: 700;
+    -fx-fill: #00E5FF;
+}
+
+/* Dashboard Cards (Charcoal surfaces with Electric Blue accents) */
+.dashboard-card {
+    -fx-background-color: #121620;
+    -fx-border-color: #1E2638;
+    -fx-border-width: 1px;
+    -fx-border-radius: 14px;
+    -fx-background-radius: 14px;
+    -fx-padding: 22px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.45), 16, 0, 0, 8);
+}
+
+.dashboard-card:hover {
+    -fx-border-color: rgba(0, 229, 255, 0.5);
+    -fx-effect: dropshadow(gaussian, rgba(0, 229, 255, 0.15), 20, 0, 0, 8);
+}
+
+.card-title {
+    -fx-font-size: 16px;
+    -fx-font-weight: 700;
+    -fx-fill: #FFFFFF;
+}
+
+.card-subtitle {
+    -fx-font-size: 12px;
+    -fx-fill: #8E9BAE;
+}
+
+/* Electric Blue Buttons */
+.btn-electric {
+    -fx-background-color: linear-gradient(to right, #00B0FF, #00E5FF);
+    -fx-text-fill: #0A0D14;
+    -fx-font-size: 13px;
+    -fx-font-weight: 700;
+    -fx-background-radius: 10px;
+    -fx-padding: 10px 22px;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(0, 229, 255, 0.35), 12, 0, 0, 4);
+}
+
+.btn-electric:hover {
+    -fx-background-color: linear-gradient(to right, #00E5FF, #33EFFF);
+    -fx-effect: dropshadow(gaussian, rgba(0, 229, 255, 0.65), 16, 0, 0, 6);
+}
+
+.btn-electric:pressed {
+    -fx-background-color: #00B0FF;
+}
+
+.btn-secondary {
+    -fx-background-color: #1A202E;
+    -fx-border-color: #283248;
+    -fx-border-width: 1px;
+    -fx-border-radius: 10px;
+    -fx-background-radius: 10px;
+    -fx-text-fill: #E6EDF3;
+    -fx-font-size: 13px;
+    -fx-font-weight: 600;
+    -fx-padding: 9px 20px;
+    -fx-cursor: hand;
+}
+
+.btn-secondary:hover {
+    -fx-border-color: #00E5FF;
+    -fx-text-fill: #00E5FF;
+    -fx-background-color: #21283B;
+}
+
+/* Status Indicators */
+.status-pill-online {
+    -fx-background-color: rgba(0, 230, 118, 0.14);
+    -fx-border-color: #00E676;
+    -fx-border-radius: 16px;
+    -fx-background-radius: 16px;
+    -fx-padding: 4px 12px;
+}
+
+.status-pill-offline {
+    -fx-background-color: rgba(255, 82, 82, 0.14);
+    -fx-border-color: #FF5252;
+    -fx-border-radius: 16px;
+    -fx-background-radius: 16px;
+    -fx-padding: 4px 12px;
+}
+
+.status-pill-checking {
+    -fx-background-color: rgba(255, 171, 0, 0.14);
+    -fx-border-color: #FFAB00;
+    -fx-border-radius: 16px;
+    -fx-background-radius: 16px;
+    -fx-padding: 4px 12px;
+}
+
+.status-text-online {
+    -fx-font-size: 11px;
+    -fx-font-weight: 700;
+    -fx-fill: #00E676;
+}
+
+.status-text-offline {
+    -fx-font-size: 11px;
+    -fx-font-weight: 700;
+    -fx-fill: #FF5252;
+}
+
+.status-text-checking {
+    -fx-font-size: 11px;
+    -fx-font-weight: 700;
+    -fx-fill: #FFAB00;
+}
+
+/* Stat & Metrics Values */
+.stat-value {
+    -fx-font-size: 26px;
+    -fx-font-weight: 800;
+    -fx-fill: #00E5FF;
+}
+
+.stat-label {
+    -fx-font-size: 11px;
+    -fx-font-weight: 600;
+    -fx-fill: #8E9BAE;
+    -fx-text-transform: uppercase;
+}
+
+/* Circular Fitness Progress Preview */
+.progress-ring-container {
+    -fx-alignment: center;
+}
+
+.progress-ring-bg {
+    -fx-stroke: #1E2638;
+    -fx-stroke-width: 10px;
+    -fx-fill: transparent;
+}
+
+.progress-ring-active {
+    -fx-stroke: #00E5FF;
+    -fx-stroke-width: 10px;
+    -fx-stroke-line-cap: round;
+    -fx-fill: transparent;
+    -fx-effect: dropshadow(gaussian, rgba(0, 229, 255, 0.5), 8, 0, 0, 0);
+}
+
+/* Leaderboard Row */
+.leaderboard-row {
+    -fx-background-color: #171C28;
+    -fx-border-color: #21293B;
+    -fx-border-width: 1px;
+    -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
+    -fx-padding: 10px 14px;
+}
+
+.leaderboard-row:hover {
+    -fx-border-color: #00E5FF;
+}
+
+.leaderboard-rank-top {
+    -fx-font-size: 14px;
+    -fx-font-weight: 800;
+    -fx-fill: #00E5FF;
+}
+
+.leaderboard-rank {
+    -fx-font-size: 14px;
+    -fx-font-weight: 700;
+    -fx-fill: #8E9BAE;
+}
+
+/* Workout Card */
+.workout-item {
+    -fx-background-color: #171C28;
+    -fx-border-color: #21293B;
+    -fx-border-radius: 10px;
+    -fx-background-radius: 10px;
+    -fx-padding: 14px;
+}
+
+.workout-item:hover {
+    -fx-border-color: rgba(0, 229, 255, 0.4);
+    -fx-background-color: #1B2232;
+}
+
+.tag-badge {
+    -fx-background-color: rgba(0, 229, 255, 0.1);
+    -fx-border-color: rgba(0, 229, 255, 0.3);
+    -fx-border-radius: 6px;
+    -fx-background-radius: 6px;
+    -fx-padding: 2px 8px;
+}
+
+.tag-badge-text {
+    -fx-font-size: 10px;
+    -fx-font-weight: 700;
+    -fx-fill: #00E5FF;
+}
+
+/* Console output & diagnostic box */
+.diagnostic-box {
+    -fx-background-color: #080B10;
+    -fx-border-color: #1A2234;
+    -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
+    -fx-padding: 12px;
+}
+
+.diagnostic-text {
+    -fx-font-family: 'Consolas', 'Courier New', monospace;
+    -fx-font-size: 11px;
+    -fx-fill: #7EE787;
+}
