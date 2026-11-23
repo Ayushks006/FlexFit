@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.text.Text?>
+
+<VBox alignment="CENTER" minHeight="560.0" spacing="22.0" styleClass="dashboard-card" stylesheets="@../css/dark-theme.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.flexfit.desktop.controller.PlaceholderController">
+    <children>
+        <StackPane>
+            <children>
+                <Circle fill="#0A0D14" radius="46.0" stroke="#00E5FF" strokeWidth="1.5" style="-fx-effect: dropshadow(gaussian, rgba(0, 229, 255, 0.35), 14, 0, 0, 0);" />
+                <Text fill="#00E5FF" style="-fx-font-size: 28px; -fx-font-weight: 800;" text="⚡" />
+            </children>
+        </StackPane>
+
+        <HBox alignment="CENTER">
+            <children>
+                <Label fx:id="phaseBadge" styleClass="badge-text" text="COMING IN PHASE 3" />
+            </children>
+        </HBox>
+
+        <Text fx:id="moduleTitle" styleClass="brand-title" text="AI Fitness Coach" />
+
+        <VBox alignment="CENTER" maxWidth="520.0" spacing="8.0" style="-fx-background-color: #0A0D14; -fx-padding: 16px; -fx-background-radius: 10px; -fx-border-color: #1E2638; -fx-border-radius: 10px;">
+            <children>
+                <Label fx:id="descriptionLabel" alignment="CENTER" style="-fx-text-fill: #8E9BAE; -fx-font-size: 13px; -fx-line-spacing: 4px;" text="This intelligent training module is currently in active architecture design and will be introduced in the upcoming development phase." textAlignment="CENTER" wrapText="true" />
+                <Label style="-fx-text-fill: #00E5FF; -fx-font-size: 11px; -fx-font-weight: 700;" text="NO SYNTHETIC OR FABRICATED DATA IS DISPLAYED">
+                    <VBox.margin>
+                        <Insets top="8.0" />
+                    </VBox.margin>
+                </Label>
+            </children>
+        </VBox>
+    </children>
+    <padding>
+        <Insets bottom="32.0" left="32.0" right="32.0" top="32.0" />
+    </padding>
+</VBox>

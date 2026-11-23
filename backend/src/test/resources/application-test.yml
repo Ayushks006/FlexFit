@@ -1,0 +1,19 @@
+spring:
+  application:
+    name: flexfit-backend-test
+  datasource:
+    url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;MODE=MySQL
+    driver-class-name: org.h2.Driver
+    username: sa
+    password: ""
+  flyway:
+    enabled: false
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: false
+
+flexfit:
+  jwt:
+    secret: test_jwt_secret_key_that_is_at_least_256_bits_long_for_unit_tests
+    expiration-ms: 3600000

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.text.Text?>
+
+<ScrollPane fitToWidth="true" styleClass="scroll-pane" stylesheets="@../css/dark-theme.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.flexfit.desktop.controller.RegistrationSuccessController">
+    <content>
+        <VBox alignment="CENTER" minHeight="780.0" spacing="28.0" styleClass="main-container">
+            <!-- Success Icon Stack -->
+            <StackPane>
+                <children>
+                    <Circle fill="#121620" radius="52.0" stroke="#00E5FF" strokeWidth="2.0" style="-fx-effect: dropshadow(gaussian, rgba(0, 229, 255, 0.5), 20, 0, 0, 0);" />
+                    <Text fill="#00E5FF" style="-fx-font-size: 42px; -fx-font-weight: 800;" text="✓" />
+                </children>
+            </StackPane>
+
+            <!-- Title & Congratulations -->
+            <VBox alignment="CENTER" spacing="6.0">
+                <children>
+                    <Text styleClass="brand-title" text="PROFILE CREATED!" />
+                    <Text styleClass="brand-subtitle" text="Your biometric profile and training baseline are synchronized." />
+                </children>
+            </VBox>
+
+            <!-- Summary Card -->
+            <VBox maxWidth="480.0" spacing="16.0" styleClass="dashboard-card">
+                <children>
+                    <HBox alignment="CENTER_LEFT" spacing="12.0">
+                        <children>
+                            <VBox spacing="4.0">
+                                <children>
+                                    <Label fx:id="welcomeNameLabel" style="-fx-text-fill: #FFFFFF; -fx-font-size: 18px; -fx-font-weight: 800;" text="Jordan Smith" />
+                                    <Label fx:id="usernameLabel" style="-fx-text-fill: #00E5FF; -fx-font-size: 13px; -fx-font-weight: 700;" text="@jsmith_fit" />
+                                </children>
+                            </VBox>
+                        </children>
+                    </HBox>
+
+                    <HBox alignment="CENTER_LEFT" style="-fx-background-color: #0A0D14; -fx-padding: 12px; -fx-background-radius: 8px; -fx-border-color: #1E2638; -fx-border-radius: 8px;">
+                        <children>
+                            <Label fx:id="goalLabel" style="-fx-text-fill: #E6EDF3; -fx-font-size: 13px; -fx-font-weight: 600;" text="Goal: Muscle gain" />
+                        </children>
+                    </HBox>
+
+                    <VBox spacing="10.0">
+                        <children>
+                            <Button maxWidth="1.7976931348623157E308" onAction="#handleEnterDashboard" styleClass="btn-electric" text="Enter Dashboard →" />
+                            <Button maxWidth="1.7976931348623157E308" onAction="#handleGoToLogin" styleClass="btn-secondary" text="Return to Sign In" />
+                        </children>
+                        <VBox.margin>
+                            <Insets top="8.0" />
+                        </VBox.margin>
+                    </VBox>
+                </children>
+            </VBox>
+        </VBox>
+    </content>
+</ScrollPane>

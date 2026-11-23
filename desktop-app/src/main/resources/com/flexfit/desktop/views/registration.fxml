@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.ProgressBar?>
+<?import javafx.scene.control.ProgressIndicator?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Spinner?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Text?>
+
+<ScrollPane fitToWidth="true" styleClass="scroll-pane" stylesheets="@../css/dark-theme.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.flexfit.desktop.controller.RegistrationController">
+    <content>
+        <VBox alignment="CENTER" minHeight="780.0" spacing="22.0" styleClass="main-container">
+            <!-- Header Brand & Progress -->
+            <VBox alignment="CENTER" maxWidth="560.0" spacing="12.0">
+                <children>
+                    <HBox alignment="CENTER" spacing="6.0">
+                        <children>
+                            <Text styleClass="brand-title" text="FLEX" />
+                            <Text styleClass="brand-title, brand-accent" text="FIT" />
+                        </children>
+                    </HBox>
+                    <HBox alignment="CENTER_LEFT">
+                        <children>
+                            <Label fx:id="stepIndicatorLabel" styleClass="badge-text" text="STEP 1 OF 6" />
+                            <Region HBox.hgrow="ALWAYS" />
+                            <Label fx:id="stepTitleLabel" style="-fx-text-fill: #E6EDF3; -fx-font-weight: 700; -fx-font-size: 13px;" text="Account Credentials" />
+                        </children>
+                    </HBox>
+                    <ProgressBar fx:id="stepProgressBar" maxWidth="1.7976931348623157E308" prefHeight="6.0" progress="0.16" styleClass="step-progress-bar" />
+                </children>
+            </VBox>
+
+            <!-- Registration Card Container -->
+            <VBox maxWidth="560.0" spacing="18.0" styleClass="dashboard-card">
+                <children>
+                    <!-- Error Alert Box -->
+                    <VBox fx:id="errorBox" managed="false" spacing="4.0" styleClass="alert-box-error" visible="false">
+                        <children>
+                            <Label fx:id="errorLabel" styleClass="alert-text-error" text="Error details" wrapText="true" />
+                        </children>
+                    </VBox>
+
+                    <!-- STEP 1: Account Information -->
+                    <VBox fx:id="step1Panel" spacing="14.0">
+                        <children>
+                            <VBox spacing="6.0">
+                                <children>
+                                    <Label styleClass="form-label" text="FULL NAME *" />
+                                    <TextField fx:id="fullNameField" promptText="e.g. Jordan Smith" styleClass="form-input" />
+                                </children>
+                            </VBox>
+                            <VBox spacing="6.0">
+                                <children>
+                                    <Label styleClass="form-label" text="USERNAME *" />
+                                    <TextField fx:id="usernameField" promptText="e.g. jsmith_fit" styleClass="form-input" />
+                                </children>
+                            </VBox>
+                            <VBox spacing="6.0">
+                                <children>
+                                    <Label styleClass="form-label" text="EMAIL ADDRESS *" />
+                                    <TextField fx:id="emailField" promptText="e.g. jordan@example.com" styleClass="form-input" />
+                                </children>
+                            </VBox>
+                            <VBox spacing="6.0">
+                                <children>
+                                    <HBox alignment="CENTER_LEFT">
+                                        <children>
+                                            <Label styleClass="form-label" text="PASSWORD *" />
+                                            <Region HBox.hgrow="ALWAYS" />
+                                            <CheckBox fx:id="passwordToggleCheckbox" styleClass="form-checkbox" text="Show Passwords" />
+                                        </children>
+                                    </HBox>
+                                    <StackPane alignment="CENTER_RIGHT">
+                                        <children>
+                                            <PasswordField fx:id="passwordField" promptText="At least 6 characters" styleClass="form-input" />
+                                            <TextField fx:id="passwordVisibleField" promptText="At least 6 characters" styleClass="form-input" visible="false" />
+                                        </children>
+                                    </StackPane>
+                                </children>
+                            </VBox>
+                            <VBox spacing="6.0">
+                                <children>
+                                    <Label styleClass="form-label" text="CONFIRM PASSWORD *" />
+                                    <StackPane alignment="CENTER_RIGHT">
+                                        <children>
+                                            <PasswordField fx:id="confirmPasswordField" promptText="Re-enter your password" styleClass="form-input" />
+                                            <TextField fx:id="confirmPasswordVisibleField" promptText="Re-enter your password" styleClass="form-input" visible="false" />
+                                        </children>
+                                    </StackPane>
+                                </children>
+                            </VBox>
+                        </children>
+                    </VBox>
+
+                    <!-- STEP 2: Personal Information -->
+                    <VBox fx:id="step2Panel" managed="false" spacing="14.0" visible="false">
+                        <children>
+                            <GridPane hgap="14.0" vgap="14.0">
+                                <columnConstraints>
+                                    <ColumnConstraints percentWidth="50.0" />
+                                    <ColumnConstraints percentWidth="50.0" />
+                                </columnConstraints>
+                                <rowConstraints>
+                                    <RowConstraints />
+                                    <RowConstraints />
+                                </rowConstraints>
+                                <children>
+                                    <VBox spacing="6.0" GridPane.columnIndex="0" GridPane.rowIndex="0">
+                                        <children>
+                                            <Label styleClass="form-label" text="AGE *" />
+                                            <Spinner fx:id="ageSpinner" maxWidth="1.7976931348623157E308" styleClass="form-spinner" />
+                                        </children>
+                                    </VBox>
+                                    <VBox spacing="6.0" GridPane.columnIndex="1" GridPane.rowIndex="0">
+                                        <children>
+                                            <Label styleClass="form-label" text="GENDER *" />
+                                            <ComboBox fx:id="genderComboBox" maxWidth="1.7976931348623157E308" styleClass="form-combo" />
+                                        </children>
+                                    </VBox>
+                                    <VBox spacing="6.0" GridPane.columnIndex="0" GridPane.rowIndex="1">
+                                        <children>
+                                            <Label styleClass="form-label" text="DISTRICT / CITY *" />
+                                            <TextField fx:id="districtField" promptText="e.g. Central District" styleClass="form-input" />
+                                        </children>
+                                    </VBox>
+                                    <VBox spacing="6.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                        <children>
+                                            <Label styleClass="form-label" text="STATE / REGION *" />
+                                            <TextField fx:id="stateField" promptText="e.g. California" styleClass="form-input" />
+                                        </children>
+                                    </VBox>
+                                </children>
+                            </GridPane>
+                        </children>
+                    </VBox>
+
+                    <!-- STEP 3: Body Information -->
+                    <VBox fx:id="step3Panel" managed="false" spacing="14.0" visible="false">
+                        <children>
+                            <VBox spacing="6.0">
+                                <children>
+                                    <Label styleClass="form-label" text="HEIGHT (CM) *" />
+                                    <TextField fx:id="heightField" promptText="e.g. 178.5" styleClass="form-input" text="175.0" />
+                                </children>
+                            </VBox>
+                            <VBox spacing="6.0">
+                                <children>
+                                    <Label styleClass="form-label" text="CURRENT WEIGHT (KG) *" />
+                                    <TextField fx:id="currentWeightField" promptText="e.g. 74.0" styleClass="form-input" text="72.0" />
+                                </children>
+                            </VBox>
+                            <VBox spacing="6.0">
+                                <children>
+                                    <Label styleClass="form-label" text="TARGET GOAL WEIGHT (KG) *" />
+                                    <TextField fx:id="targetWeightField" promptText="e.g. 68.0" styleClass="form-input" text="68.0" />
+                                </children>
+                            </VBox>
+                        </children>
+                    </VBox>
+
+                    <!-- STEP 4: Fitness Goals & Experience -->
+                    <VBox fx:id="step4Panel" managed="false" spacing="14.0" visible="false">
+                        <children>
+                            <VBox spacing="6.0">
+                                <children>
+                                    <Label styleClass="form-label" text="PRIMARY FITNESS GOAL *" />
+                                    <ComboBox fx:id="fitnessGoalComboBox" maxWidth="1.7976931348623157E308" styleClass="form-combo" />
+                                </children>
+                            </VBox>
+                            <VBox spacing="6.0">
+                                <children>
+                                    <Label styleClass="form-label" text="EXPERIENCE LEVEL *" />
+                                    <ComboBox fx:id="experienceLevelComboBox" maxWidth="1.7976931348623157E308" styleClass="form-combo" />
+                                </children>
+                            </VBox>
+                        </children>
+                    </VBox>
+
+                    <!-- STEP 5: Workout Location & Diet -->
+                    <VBox fx:id="step5Panel" managed="false" spacing="14.0" visible="false">
+                        <children>
+                            <VBox spacing="6.0">
+                                <children>
+                                    <Label styleClass="form-label" text="PRIMARY WORKOUT LOCATION *" />
+                                    <ComboBox fx:id="workoutLocationComboBox" maxWidth="1.7976931348623157E308" styleClass="form-combo" />
+                                </children>
+                            </VBox>
+                            <VBox spacing="6.0">
+                                <children>
+                                    <Label styleClass="form-label" text="AVAILABLE EQUIPMENT" />
+                                    <FlowPane hgap="12.0" vgap="8.0">
+                                        <children>
+                                            <CheckBox fx:id="eqDumbbells" selected="true" styleClass="form-checkbox" text="Dumbbells" />
+                                            <CheckBox fx:id="eqBarbell" styleClass="form-checkbox" text="Barbell" />
+                                            <CheckBox fx:id="eqBands" selected="true" styleClass="form-checkbox" text="Resistance Bands" />
+                                            <CheckBox fx:id="eqPullup" styleClass="form-checkbox" text="Pull-up Bar" />
+                                            <CheckBox fx:id="eqBench" styleClass="form-checkbox" text="Workout Bench" />
+                                            <CheckBox fx:id="eqCardio" styleClass="form-checkbox" text="Cardio Machine" />
+                                            <CheckBox fx:id="eqNone" styleClass="form-checkbox" text="Bodyweight Only" />
+                                        </children>
+                                    </FlowPane>
+                                </children>
+                            </VBox>
+                            <VBox spacing="6.0">
+                                <children>
+                                    <Label styleClass="form-label" text="PREFERRED WORKOUT DURATION (MINUTES) *" />
+                                    <ComboBox fx:id="durationComboBox" maxWidth="1.7976931348623157E308" styleClass="form-combo" />
+                                </children>
+                            </VBox>
+                            <VBox spacing="6.0">
+                                <children>
+                                    <Label styleClass="form-label" text="DIETARY PREFERENCE *" />
+                                    <ComboBox fx:id="dietPreferenceComboBox" maxWidth="1.7976931348623157E308" styleClass="form-combo" />
+                                </children>
+                            </VBox>
+                        </children>
+                    </VBox>
+
+                    <!-- STEP 6: Health & Safety Information -->
+                    <VBox fx:id="step6Panel" managed="false" spacing="14.0" visible="false">
+                        <children>
+                            <VBox spacing="6.0">
+                                <children>
+                                    <Label styleClass="form-label" text="FOOD ALLERGIES (OPTIONAL)" />
+                                    <TextArea fx:id="allergiesArea" prefRowCount="2" promptText="e.g. Peanuts, Dairy, Shellfish, or None" styleClass="form-textarea" wrapText="true" />
+                                </children>
+                            </VBox>
+                            <VBox spacing="6.0">
+                                <children>
+                                    <Label styleClass="form-label" text="DIETARY RESTRICTIONS (OPTIONAL)" />
+                                    <TextArea fx:id="restrictionsArea" prefRowCount="2" promptText="e.g. Gluten-free, Keto, Low Sodium, or None" styleClass="form-textarea" wrapText="true" />
+                                </children>
+                            </VBox>
+                            <VBox spacing="6.0">
+                                <children>
+                                    <Label styleClass="form-label" text="INJURIES OR PHYSICAL LIMITATIONS (OPTIONAL)" />
+                                    <TextArea fx:id="injuriesArea" prefRowCount="2" promptText="e.g. Lower back stiffness, right knee surgery, or None" styleClass="form-textarea" wrapText="true" />
+                                </children>
+                            </VBox>
+                        </children>
+                    </VBox>
+
+                    <!-- Step Navigation Actions -->
+                    <HBox alignment="CENTER_RIGHT" spacing="14.0">
+                        <children>
+                            <Button onAction="#handleCancel" styleClass="btn-secondary" text="Cancel" />
+                            <Region HBox.hgrow="ALWAYS" />
+                            <Button fx:id="prevButton" disable="true" onAction="#handlePrevious" styleClass="btn-secondary" text="← Back" />
+                            <Button fx:id="nextButton" onAction="#handleNext" styleClass="btn-electric" text="Continue →" />
+                            <ProgressIndicator fx:id="loadingIndicator" managed="false" maxHeight="28.0" maxWidth="28.0" visible="false" />
+                        </children>
+                        <VBox.margin>
+                            <Insets top="14.0" />
+                        </VBox.margin>
+                    </HBox>
+                </children>
+            </VBox>
+        </VBox>
+    </content>
+</ScrollPane>

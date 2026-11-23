@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ProgressIndicator?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Spinner?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Text?>
+
+<ScrollPane fitToWidth="true" styleClass="scroll-pane" stylesheets="@../css/dark-theme.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.flexfit.desktop.controller.EditProfileController">
+    <content>
+        <VBox spacing="18.0" style="-fx-padding: 4px;">
+            <children>
+                <!-- Title Header -->
+                <HBox alignment="CENTER_LEFT">
+                    <children>
+                        <VBox spacing="4.0">
+                            <children>
+                                <Text styleClass="card-title" text="Edit Fitness Profile" />
+                                <Text styleClass="card-subtitle" text="Update your biometrics, target goals, and training preferences" />
+                            </children>
+                        </VBox>
+                        <Region HBox.hgrow="ALWAYS" />
+                        <Button onAction="#handleCancel" styleClass="btn-secondary" text="Cancel" />
+                    </children>
+                </HBox>
+
+                <!-- Error Alert Box -->
+                <VBox fx:id="errorBox" managed="false" spacing="4.0" styleClass="alert-box-error" visible="false">
+                    <children>
+                        <Label fx:id="errorLabel" styleClass="alert-text-error" text="Error details" wrapText="true" />
+                    </children>
+                </VBox>
+
+                <!-- Form Card -->
+                <VBox spacing="20.0" styleClass="dashboard-card">
+                    <children>
+                        <Text styleClass="form-label" text="PERSONAL &amp; LOCATION INFORMATION" />
+                        <GridPane hgap="16.0" vgap="14.0">
+                            <columnConstraints>
+                                <ColumnConstraints percentWidth="50.0" />
+                                <ColumnConstraints percentWidth="50.0" />
+                            </columnConstraints>
+                            <rowConstraints>
+                                <RowConstraints />
+                                <RowConstraints />
+                            </rowConstraints>
+                            <children>
+                                <VBox spacing="6.0" GridPane.columnIndex="0" GridPane.rowIndex="0">
+                                    <children>
+                                        <Label styleClass="form-label" text="AGE *" />
+                                        <Spinner fx:id="ageSpinner" maxWidth="1.7976931348623157E308" styleClass="form-spinner" />
+                                    </children>
+                                </VBox>
+                                <VBox spacing="6.0" GridPane.columnIndex="1" GridPane.rowIndex="0">
+                                    <children>
+                                        <Label styleClass="form-label" text="GENDER *" />
+                                        <ComboBox fx:id="genderComboBox" maxWidth="1.7976931348623157E308" styleClass="form-combo" />
+                                    </children>
+                                </VBox>
+                                <VBox spacing="6.0" GridPane.columnIndex="0" GridPane.rowIndex="1">
+                                    <children>
+                                        <Label styleClass="form-label" text="DISTRICT / CITY *" />
+                                        <TextField fx:id="districtField" styleClass="form-input" />
+                                    </children>
+                                </VBox>
+                                <VBox spacing="6.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                    <children>
+                                        <Label styleClass="form-label" text="STATE / REGION *" />
+                                        <TextField fx:id="stateField" styleClass="form-input" />
+                                    </children>
+                                </VBox>
+                            </children>
+                        </GridPane>
+
+                        <Text styleClass="form-label" text="BIOMETRIC MEASUREMENTS" />
+                        <GridPane hgap="16.0" vgap="14.0">
+                            <columnConstraints>
+                                <ColumnConstraints percentWidth="33.3" />
+                                <ColumnConstraints percentWidth="33.3" />
+                                <ColumnConstraints percentWidth="33.4" />
+                            </columnConstraints>
+                            <rowConstraints>
+                                <RowConstraints />
+                            </rowConstraints>
+                            <children>
+                                <VBox spacing="6.0" GridPane.columnIndex="0" GridPane.rowIndex="0">
+                                    <children>
+                                        <Label styleClass="form-label" text="HEIGHT (CM) *" />
+                                        <TextField fx:id="heightField" styleClass="form-input" />
+                                    </children>
+                                </VBox>
+                                <VBox spacing="6.0" GridPane.columnIndex="1" GridPane.rowIndex="0">
+                                    <children>
+                                        <Label styleClass="form-label" text="CURRENT WEIGHT (KG) *" />
+                                        <TextField fx:id="currentWeightField" styleClass="form-input" />
+                                    </children>
+                                </VBox>
+                                <VBox spacing="6.0" GridPane.columnIndex="2" GridPane.rowIndex="0">
+                                    <children>
+                                        <Label styleClass="form-label" text="TARGET WEIGHT (KG) *" />
+                                        <TextField fx:id="targetWeightField" styleClass="form-input" />
+                                    </children>
+                                </VBox>
+                            </children>
+                        </GridPane>
+
+                        <Text styleClass="form-label" text="TRAINING TARGETS &amp; HABITS" />
+                        <GridPane hgap="16.0" vgap="14.0">
+                            <columnConstraints>
+                                <ColumnConstraints percentWidth="50.0" />
+                                <ColumnConstraints percentWidth="50.0" />
+                            </columnConstraints>
+                            <rowConstraints>
+                                <RowConstraints />
+                                <RowConstraints />
+                            </rowConstraints>
+                            <children>
+                                <VBox spacing="6.0" GridPane.columnIndex="0" GridPane.rowIndex="0">
+                                    <children>
+                                        <Label styleClass="form-label" text="PRIMARY FITNESS GOAL *" />
+                                        <ComboBox fx:id="fitnessGoalComboBox" maxWidth="1.7976931348623157E308" styleClass="form-combo" />
+                                    </children>
+                                </VBox>
+                                <VBox spacing="6.0" GridPane.columnIndex="1" GridPane.rowIndex="0">
+                                    <children>
+                                        <Label styleClass="form-label" text="EXPERIENCE LEVEL *" />
+                                        <ComboBox fx:id="experienceLevelComboBox" maxWidth="1.7976931348623157E308" styleClass="form-combo" />
+                                    </children>
+                                </VBox>
+                                <VBox spacing="6.0" GridPane.columnIndex="0" GridPane.rowIndex="1">
+                                    <children>
+                                        <Label styleClass="form-label" text="WORKOUT LOCATION *" />
+                                        <ComboBox fx:id="workoutLocationComboBox" maxWidth="1.7976931348623157E308" styleClass="form-combo" />
+                                    </children>
+                                </VBox>
+                                <VBox spacing="6.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                    <children>
+                                        <Label styleClass="form-label" text="PREFERRED DURATION *" />
+                                        <ComboBox fx:id="durationComboBox" maxWidth="1.7976931348623157E308" styleClass="form-combo" />
+                                    </children>
+                                </VBox>
+                            </children>
+                        </GridPane>
+
+                        <VBox spacing="8.0">
+                            <children>
+                                <Label styleClass="form-label" text="AVAILABLE EQUIPMENT" />
+                                <FlowPane hgap="12.0" vgap="8.0">
+                                    <children>
+                                        <CheckBox fx:id="eqDumbbells" styleClass="form-checkbox" text="Dumbbells" />
+                                        <CheckBox fx:id="eqBarbell" styleClass="form-checkbox" text="Barbell" />
+                                        <CheckBox fx:id="eqBands" styleClass="form-checkbox" text="Resistance Bands" />
+                                        <CheckBox fx:id="eqPullup" styleClass="form-checkbox" text="Pull-up Bar" />
+                                        <CheckBox fx:id="eqBench" styleClass="form-checkbox" text="Workout Bench" />
+                                        <CheckBox fx:id="eqCardio" styleClass="form-checkbox" text="Cardio Machine" />
+                                        <CheckBox fx:id="eqNone" styleClass="form-checkbox" text="Bodyweight / None" />
+                                    </children>
+                                </FlowPane>
+                            </children>
+                        </VBox>
+
+                        <VBox spacing="6.0">
+                            <children>
+                                <Label styleClass="form-label" text="DIETARY PREFERENCE *" />
+                                <ComboBox fx:id="dietPreferenceComboBox" maxWidth="1.7976931348623157E308" styleClass="form-combo" />
+                            </children>
+                        </VBox>
+
+                        <Text styleClass="form-label" text="SAFETY &amp; RESTRICTIONS" />
+                        <GridPane hgap="16.0" vgap="14.0">
+                            <columnConstraints>
+                                <ColumnConstraints percentWidth="33.3" />
+                                <ColumnConstraints percentWidth="33.3" />
+                                <ColumnConstraints percentWidth="33.4" />
+                            </columnConstraints>
+                            <rowConstraints>
+                                <RowConstraints />
+                            </rowConstraints>
+                            <children>
+                                <VBox spacing="6.0" GridPane.columnIndex="0" GridPane.rowIndex="0">
+                                    <children>
+                                        <Label styleClass="form-label" text="FOOD ALLERGIES" />
+                                        <TextArea fx:id="allergiesArea" prefRowCount="2" styleClass="form-textarea" wrapText="true" />
+                                    </children>
+                                </VBox>
+                                <VBox spacing="6.0" GridPane.columnIndex="1" GridPane.rowIndex="0">
+                                    <children>
+                                        <Label styleClass="form-label" text="DIETARY RESTRICTIONS" />
+                                        <TextArea fx:id="restrictionsArea" prefRowCount="2" styleClass="form-textarea" wrapText="true" />
+                                    </children>
+                                </VBox>
+                                <VBox spacing="6.0" GridPane.columnIndex="2" GridPane.rowIndex="0">
+                                    <children>
+                                        <Label styleClass="form-label" text="INJURIES / LIMITATIONS" />
+                                        <TextArea fx:id="injuriesArea" prefRowCount="2" styleClass="form-textarea" wrapText="true" />
+                                    </children>
+                                </VBox>
+                            </children>
+                        </GridPane>
+
+                        <HBox alignment="CENTER_RIGHT" spacing="14.0">
+                            <children>
+                                <Button onAction="#handleCancel" styleClass="btn-secondary" text="Cancel" />
+                                <Button fx:id="saveButton" onAction="#handleSave" styleClass="btn-electric" text="Save Profile Changes" />
+                                <ProgressIndicator fx:id="loadingIndicator" managed="false" maxHeight="28.0" maxWidth="28.0" visible="false" />
+                            </children>
+                            <VBox.margin>
+                                <Insets top="10.0" />
+                            </VBox.margin>
+                        </HBox>
+                    </children>
+                </VBox>
+            </children>
+        </VBox>
+    </content>
+</ScrollPane>

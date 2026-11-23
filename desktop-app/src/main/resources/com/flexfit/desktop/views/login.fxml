@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.Hyperlink?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.ProgressIndicator?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Text?>
+
+<ScrollPane fitToWidth="true" styleClass="scroll-pane" stylesheets="@../css/dark-theme.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.flexfit.desktop.controller.LoginController">
+    <content>
+        <VBox alignment="CENTER" minHeight="760.0" spacing="28.0" styleClass="main-container">
+            <!-- Header Brand -->
+            <VBox alignment="CENTER" spacing="6.0">
+                <children>
+                    <HBox alignment="CENTER" spacing="6.0">
+                        <children>
+                            <Text styleClass="brand-title" text="FLEX" />
+                            <Text styleClass="brand-title, brand-accent" text="FIT" />
+                        </children>
+                    </HBox>
+                    <Text styleClass="brand-subtitle" text="Sign in to your AI-Powered Fitness Dashboard" />
+                </children>
+            </VBox>
+
+            <!-- Login Card -->
+            <VBox maxWidth="460.0" spacing="20.0" styleClass="dashboard-card">
+                <children>
+                    <VBox spacing="4.0">
+                        <children>
+                            <Text styleClass="card-title" text="Member Sign In" />
+                            <Text styleClass="card-subtitle" text="Enter your account credentials to continue" />
+                        </children>
+                    </VBox>
+
+                    <!-- Error Alert Banner -->
+                    <VBox fx:id="errorBox" managed="false" spacing="4.0" styleClass="alert-box-error" visible="false">
+                        <children>
+                            <Label fx:id="errorLabel" styleClass="alert-text-error" text="Invalid credentials" wrapText="true" />
+                        </children>
+                    </VBox>
+
+                    <!-- Username / Email Field -->
+                    <VBox spacing="8.0">
+                        <children>
+                            <Label styleClass="form-label" text="USERNAME OR EMAIL" />
+                            <TextField fx:id="usernameOrEmailField" promptText="e.g. fituser1 or member@example.com" styleClass="form-input" />
+                        </children>
+                    </VBox>
+
+                    <!-- Password Field with Visibility Toggle -->
+                    <VBox spacing="8.0">
+                        <children>
+                            <HBox alignment="CENTER_LEFT">
+                                <children>
+                                    <Label styleClass="form-label" text="PASSWORD" />
+                                    <Region HBox.hgrow="ALWAYS" />
+                                    <CheckBox fx:id="passwordToggleCheckbox" styleClass="form-checkbox" text="Show Password" />
+                                </children>
+                            </HBox>
+                            <StackPane alignment="CENTER_RIGHT">
+                                <children>
+                                    <PasswordField fx:id="passwordField" promptText="Enter your password" styleClass="form-input" />
+                                    <TextField fx:id="passwordVisibleField" promptText="Enter your password" styleClass="form-input" visible="false" />
+                                </children>
+                            </StackPane>
+                        </children>
+                    </VBox>
+
+                    <!-- Sign In Action Button & Spinner -->
+                    <HBox alignment="CENTER" spacing="12.0">
+                        <children>
+                            <Button fx:id="signInButton" defaultButton="true" maxWidth="1.7976931348623157E308" onAction="#handleLogin" styleClass="btn-electric" text="Sign In" HBox.hgrow="ALWAYS" />
+                            <ProgressIndicator fx:id="loadingIndicator" managed="false" maxHeight="28.0" maxWidth="28.0" visible="false" />
+                        </children>
+                        <VBox.margin>
+                            <Insets top="10.0" />
+                        </VBox.margin>
+                    </HBox>
+
+                    <!-- Navigation to Register -->
+                    <HBox alignment="CENTER" spacing="4.0">
+                        <children>
+                            <Text fill="#8E9BAE" text="New to FlexFit?" />
+                            <Hyperlink onAction="#handleNavigateRegister" styleClass="form-link" text="Create Account" />
+                        </children>
+                    </HBox>
+                </children>
+            </VBox>
+
+            <!-- Back to Welcome Link -->
+            <Hyperlink onAction="#handleNavigateBack" styleClass="form-link-muted" text="← Return to Welcome Screen" />
+        </VBox>
+    </content>
+</ScrollPane>

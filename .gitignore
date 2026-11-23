@@ -61,6 +61,7 @@ htmlcov/
 *.log
 logs/
 *.sql
+!**/db/migration/*.sql
 *.sqlite
 
 # Environment variables & Sensitive data

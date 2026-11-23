@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Text?>
+
+<VBox spacing="20.0" stylesheets="@../css/dark-theme.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.flexfit.desktop.controller.SettingsController">
+    <children>
+        <VBox spacing="4.0">
+            <children>
+                <Text styleClass="card-title" text="Application &amp; Security Settings" />
+                <Text styleClass="card-subtitle" text="Manage your security preferences, active session, and system configurations" />
+            </children>
+        </VBox>
+
+        <GridPane hgap="18.0" vgap="18.0">
+            <columnConstraints>
+                <ColumnConstraints percentWidth="50.0" />
+                <ColumnConstraints percentWidth="50.0" />
+            </columnConstraints>
+            <rowConstraints>
+                <RowConstraints />
+                <RowConstraints />
+            </rowConstraints>
+            <children>
+                <!-- CARD 1: Account & Authentication -->
+                <VBox spacing="14.0" styleClass="dashboard-card" GridPane.columnIndex="0" GridPane.rowIndex="0">
+                    <children>
+                        <Text styleClass="form-label" text="AUTHENTICATED ACCOUNT" />
+                        <VBox spacing="8.0">
+                            <children>
+                                <HBox>
+                                    <Text fill="#8E9BAE" text="Username:" />
+                                    <Region HBox.hgrow="ALWAYS" />
+                                    <Label fx:id="usernameLabel" style="-fx-text-fill: #00E5FF; -fx-font-weight: 700;" text="--" />
+                                </HBox>
+                                <HBox>
+                                    <Text fill="#8E9BAE" text="Registered Email:" />
+                                    <Region HBox.hgrow="ALWAYS" />
+                                    <Label fx:id="emailLabel" style="-fx-text-fill: #E6EDF3;" text="--" />
+                                </HBox>
+                                <HBox>
+                                    <Text fill="#8E9BAE" text="Account Authority:" />
+                                    <Region HBox.hgrow="ALWAYS" />
+                                    <Label fx:id="roleLabel" style="-fx-text-fill: #00E5FF;" text="ROLE_USER" />
+                                </HBox>
+                            </children>
+                        </VBox>
+                    </children>
+                </VBox>
+
+                <!-- CARD 2: Network & Environment -->
+                <VBox spacing="14.0" styleClass="dashboard-card" GridPane.columnIndex="1" GridPane.rowIndex="0">
+                    <children>
+                        <Text styleClass="form-label" text="BACKEND CONNECTIVITY" />
+                        <VBox spacing="8.0">
+                            <children>
+                                <HBox>
+                                    <Text fill="#8E9BAE" text="API Base URL:" />
+                                    <Region HBox.hgrow="ALWAYS" />
+                                    <Label fx:id="backendUrlLabel" style="-fx-text-fill: #00E5FF; -fx-font-family: 'Consolas', monospace;" text="http://localhost:8080" />
+                                </HBox>
+                                <HBox>
+                                    <Text fill="#8E9BAE" text="Security Protocol:" />
+                                    <Region HBox.hgrow="ALWAYS" />
+                                    <Label style="-fx-text-fill: #E6EDF3;" text="JWT Bearer Token / Stateless" />
+                                </HBox>
+                                <HBox>
+                                    <Text fill="#8E9BAE" text="Visual Theme:" />
+                                    <Region HBox.hgrow="ALWAYS" />
+                                    <Label style="-fx-text-fill: #00E5FF; -fx-font-weight: 700;" text="Electric Blue / Obsidian Charcoal" />
+                                </HBox>
+                            </children>
+                        </VBox>
+                    </children>
+                </VBox>
+
+                <!-- CARD 3: Session Termination -->
+                <VBox spacing="14.0" styleClass="dashboard-card" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="1">
+                    <children>
+                        <Text styleClass="form-label" text="SESSION ACTIONS" />
+                        <HBox alignment="CENTER_LEFT" spacing="16.0">
+                            <children>
+                                <VBox spacing="2.0">
+                                    <children>
+                                        <Text fill="#FFFFFF" style="-fx-font-size: 13px; -fx-font-weight: 700;" text="Sign Out from Current Desktop Session" />
+                                        <Text fill="#8E9BAE" style="-fx-font-size: 11px;" text="Clears active JWT security tokens from memory and returns to member login." />
+                                    </children>
+                                </VBox>
+                                <Region HBox.hgrow="ALWAYS" />
+                                <Button onAction="#handleLogout" styleClass="btn-secondary" style="-fx-border-color: #FF5252; -fx-text-fill: #FF5252;" text="Logout of FlexFit" />
+                            </children>
+                        </HBox>
+                    </children>
+                </VBox>
+            </children>
+        </GridPane>
+    </children>
+</VBox>

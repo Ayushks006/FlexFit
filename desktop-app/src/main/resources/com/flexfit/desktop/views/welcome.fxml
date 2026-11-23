@@ -45,6 +45,9 @@
                         </children>
                     </VBox>
                     <Region HBox.hgrow="ALWAYS" />
+                    <!-- Action Buttons for Phase 2 Authentication -->
+                    <Button onAction="#handleNavigateLogin" styleClass="btn-secondary" text="Sign In" />
+                    <Button onAction="#handleNavigateRegister" styleClass="btn-electric" text="Create Account" />
                     <!-- Backend Connectivity Status Pill -->
                     <HBox fx:id="statusPill" alignment="CENTER" spacing="8.0" styleClass="status-pill-offline">
                         <children>

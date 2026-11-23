@@ -4,7 +4,7 @@
 
 ---
 
-## Architecture Overview (Phase 1)
+## Architecture Overview (Phase 1 & Phase 2)
 
 ```
 FlexFit/
@@ -14,24 +14,39 @@ FlexFit/
 ├── mvnw / mvnw.cmd                       # Maven 3.9+ Wrapper
 ├── .mvn/wrapper/
 │   └── maven-wrapper.properties
-├── backend/                              # Spring Boot REST API & Business Logic
+├── backend/                              # Spring Boot REST API, Security & Profile Logic
 │   ├── pom.xml
 │   └── src/
 │       ├── main/
 │       │   ├── java/com/flexfit/backend/
 │       │   │   ├── FlexFitBackendApplication.java
-│       │   │   ├── config/
-│       │   │   │   └── CorsConfig.java
+│       │   │   ├── config/CorsConfig.java
 │       │   │   ├── controller/
-│       │   │   │   └── HealthController.java
+│       │   │   │   ├── AuthController.java
+│       │   │   │   ├── HealthController.java
+│       │   │   │   └── ProfileController.java
 │       │   │   ├── dto/
-│       │   │   │   └── HealthResponse.java
-│       │   │   └── service/
-│       │   │       └── HealthService.java
+│       │   │   │   ├── request/ (RegisterRequest, LoginRequest, ProfileUpdateRequest)
+│       │   │   │   └── response/ (ApiResponse, AuthResponse, UserDto, FitnessProfileDto)
+│       │   │   ├── entity/ (User, FitnessProfile)
+│       │   │   ├── exception/ (GlobalExceptionHandler, DuplicateResourceException, etc.)
+│       │   │   ├── repository/ (UserRepository, FitnessProfileRepository)
+│       │   │   ├── security/ (SecurityConfig, JwtTokenProvider, JwtAuthFilter, UserPrincipal)
+│       │   │   └── service/ (AuthService, ProfileService, HealthService)
 │       │   └── resources/
-│       │       └── application.yml
-│       └── test/java/com/flexfit/backend/
-│           └── HealthControllerTest.java
+│       │       ├── application.yml
+│       │       └── db/migration/
+│       │           └── V1__init_auth_and_profile_schema.sql
+│       └── test/
+│           ├── java/com/flexfit/backend/
+│           │   ├── AuthControllerTest.java
+│           │   ├── AuthServiceTest.java
+│           │   ├── HealthControllerTest.java
+│           │   ├── JwtTokenProviderTest.java
+│           │   ├── PersistenceTest.java
+│           │   ├── ProfileControllerTest.java
+│           │   └── ProfileServiceTest.java
+│           └── resources/application-test.yml
 ├── desktop-app/                          # JavaFX Desktop Application & User Interface
 │   ├── pom.xml
 │   └── src/
@@ -39,18 +54,34 @@ FlexFit/
 │       │   ├── java/com/flexfit/desktop/
 │       │   │   ├── FlexFitDesktopApp.java
 │       │   │   ├── controller/
-│       │   │   │   └── WelcomeController.java
-│       │   │   ├── model/
-│       │   │   │   └── BackendHealth.java
-│       │   │   └── service/
-│       │   │       └── BackendClient.java
+│       │   │   │   ├── WelcomeController.java
+│       │   │   │   ├── LoginController.java
+│       │   │   │   ├── RegistrationController.java
+│       │   │   │   ├── RegistrationSuccessController.java
+│       │   │   │   ├── DashboardController.java
+│       │   │   │   ├── ProfileController.java
+│       │   │   │   ├── EditProfileController.java
+│       │   │   │   ├── SettingsController.java
+│       │   │   │   └── PlaceholderController.java
+│       │   │   ├── model/ (UserSession, FitnessProfileModel, RegistrationData, BackendHealth)
+│       │   │   └── service/ (BackendClient, SessionManager, ScreenManager)
 │       │   └── resources/com/flexfit/desktop/
-│       │       ├── css/
-│       │       │   └── dark-theme.css    # Dark charcoal & Electric Blue theme
+│       │       ├── css/dark-theme.css    # Electric Blue & Charcoal Theme
 │       │       └── views/
-│       │           └── welcome.fxml      # Welcome Dashboard View
+│       │           ├── welcome.fxml
+│       │           ├── login.fxml
+│       │           ├── registration.fxml
+│       │           ├── registration_success.fxml
+│       │           ├── dashboard.fxml
+│       │           ├── my_profile.fxml
+│       │           ├── edit_profile.fxml
+│       │           ├── settings.fxml
+│       │           └── placeholder.fxml
 │       └── test/java/com/flexfit/desktop/
-│           └── BackendClientTest.java
+│           ├── BackendClientTest.java
+│           ├── DesktopBackendClientAuthTest.java
+│           ├── RegistrationValidationTest.java
+│           └── SessionManagerTest.java
 └── ml-service/                           # Python Machine Learning Microservice
     ├── requirements.txt
     ├── app.py                            # FastAPI Service & Model Metadata
@@ -69,9 +100,10 @@ The application strictly implements the FlexFit design direction:
 - **Base Palette**: Obsidian & Deep Charcoal (`#0A0D14`, `#121620`, `#1E2638`).
 - **Accent Palette**: Neon Electric Blue (`#00E5FF`, `#00B0FF`, `#2979FF`).
 - **Interactive UI Cards**: Modern cards with subtle glowing borders, drop-shadow elevations, and hover transitions.
-- **Biometric Progress Indicators**: High-tech circular progress rings showing daily target completion (78%), active calories, duration, and hydration.
-- **Leaderboard**: Gaming-inspired rankings with player tiers (Diamond Rank #4), XP progress bars, and glowing status pills.
-- **REST Status Indicator**: Real-time asynchronous status badge reflecting Spring Boot backend connectivity with ping latency diagnostics.
+- **Biometric Progress Indicators**: Circular progress rings showing daily target completion, active calories, duration, and hydration.
+- **Form Controls & Modals**: Dark charcoal inputs with electric-blue focus rings, password visibility toggles, step-by-step progress bars, and alert banners.
+- **Authenticated Dashboard**: Personalized greeting, live biometric summary, dynamic profile completion indicator, and responsive sidebar navigation.
+- **Polished Module Placeholders**: Elegant coming-soon placeholders for modules scheduled in subsequent phases (AI Coach, Workout Planner, Diet Planner, Challenges, Leaderboard, Progress Tracker, Achievements) without synthetic data or fake rankings.
 
 ---
 
@@ -88,15 +120,11 @@ The application strictly implements the FlexFit design direction:
 
 ### How to Install Missing Tools
 
-#### 1. Java 21 LTS (OpenJDK / Eclipse Temurin)
+#### 1. Java 21 LTS (Eclipse Temurin / OpenJDK)
 - **Option A (Manual)**: Download Eclipse Temurin 21 (LTS) from [adoptium.net](https://adoptium.net/) and run the installer. Ensure "Set JAVA_HOME variable" and "Add to PATH" are checked.
 - **Option B (Windows Command)**:
   ```powershell
   winget install EclipseAdoptium.Temurin.21.JDK
-  ```
-- **Verify**:
-  ```powershell
-  java -version
   ```
 
 #### 2. MySQL Community Server 8.0+
@@ -105,16 +133,19 @@ The application strictly implements the FlexFit design direction:
   ```powershell
   winget install Oracle.MySQL
   ```
-- **Database Initialization**:
+- **Database Setup**:
   ```sql
   CREATE DATABASE IF NOT EXISTS flexfit_db;
+  CREATE USER IF NOT EXISTS 'flexfit_user'@'localhost' IDENTIFIED BY 'your_password';
+  GRANT ALL PRIVILEGES ON flexfit_db.* TO 'flexfit_user'@'localhost';
+  FLUSH PRIVILEGES;
   ```
 
 ---
 
 ## Configuration & Environment Variables
 
-FlexFit strictly enforces security by avoiding hardcoded credentials. All sensitive parameters are resolved through environment variables with sensible local defaults:
+FlexFit enforces security by avoiding hardcoded credentials. All sensitive parameters are resolved through environment variables:
 
 | Variable | Default Value | Description |
 | :--- | :--- | :--- |
@@ -122,8 +153,10 @@ FlexFit strictly enforces security by avoiding hardcoded credentials. All sensit
 | `DB_HOST` | `localhost` | MySQL host address |
 | `DB_PORT` | `3306` | MySQL port |
 | `DB_NAME` | `flexfit_db` | MySQL database name |
-| `DB_USER` | `root` | Database username |
+| `DB_USER` | `flexfit_user` | Database username |
 | `DB_PASSWORD` | *(empty string)* | Database password |
+| `JWT_SECRET` | *(secure 256-bit dev default)* | Secret key for signing HMAC-SHA256 JWTs |
+| `JWT_EXPIRATION_MS` | `86400000` (24h) | JWT access token validity duration |
 | `BACKEND_URL` | `http://localhost:8080` | Desktop app target backend URL |
 | `ML_SERVICE_URL`| `http://localhost:8000` | Target URL for ML microservice |
 
@@ -141,7 +174,9 @@ Ensure JDK 21 is installed. From the project root:
 mvnw.cmd clean spring-boot:run -pl backend
 ```
 - **Health Endpoint**: `http://localhost:8080/api/v1/health`
-- **Ping Endpoint**: `http://localhost:8080/api/v1/ping`
+- **Register Endpoint**: `POST http://localhost:8080/api/v1/auth/register`
+- **Login Endpoint**: `POST http://localhost:8080/api/v1/auth/login`
+- **Profile Endpoint**: `GET / PUT http://localhost:8080/api/v1/users/me/profile`
 
 ### 2. JavaFX Desktop Application
 From the project root:
@@ -151,15 +186,12 @@ From the project root:
 # Or on Windows Command Prompt:
 mvnw.cmd javafx:run -pl desktop-app
 ```
-The desktop application opens with the FlexFit welcome dashboard, connects asynchronously to the backend REST API, and displays live status and diagnostics.
+The desktop application opens with the FlexFit welcome dashboard, providing options to sign in, create a 6-step fitness profile, view the dashboard, update profile details, and adjust settings.
 
 ### 3. Python ML Service
 ```bash
 cd ml-service
-# Run test suite:
 python -m pytest
-
-# Start development server:
 python -m uvicorn app:app --host 0.0.0.0 --port 8000 --reload
 ```
 - **Health Endpoint**: `http://localhost:8000/health`

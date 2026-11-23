@@ -11,7 +11,7 @@ spring:
   # Never hardcode sensitive credentials
   datasource:
     url: ${DB_URL:${SPRING_DATASOURCE_URL:jdbc:mysql://${DB_HOST:localhost}:${DB_PORT:3306}/${DB_NAME:flexfit_db}?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC&createDatabaseIfNotExist=true}}
-    username: ${DB_USER:${SPRING_DATASOURCE_USERNAME:root}}
+    username: ${DB_USER:${SPRING_DATASOURCE_USERNAME:flexfit_user}}
     password: ${DB_PASSWORD:${SPRING_DATASOURCE_PASSWORD:}}
     driver-class-name: com.mysql.cj.jdbc.Driver
     hikari:
@@ -23,11 +23,16 @@ spring:
       max-lifetime: 1800000
       initialization-fail-timeout: -1
 
+  flyway:
+    enabled: ${FLYWAY_ENABLED:true}
+    baseline-on-migrate: true
+    locations: classpath:db/migration
+
   jpa:
     open-in-view: false
     hibernate:
-      # Do not alter database schema automatically in Phase 1
-      ddl-auto: ${JPA_DDL_AUTO:none}
+      # Validated against Flyway schema migrations
+      ddl-auto: ${JPA_DDL_AUTO:validate}
     show-sql: false
     properties:
       hibernate:
@@ -49,6 +54,10 @@ management:
 flexfit:
   api:
     version: "v1"
+  jwt:
+    # Read from environment variable; default only for local dev fallback
+    secret: ${JWT_SECRET:flexfit_production_grade_secret_key_at_least_32_bytes_long_for_hmac_sha256}
+    expiration-ms: ${JWT_EXPIRATION_MS:86400000}
   ml-service:
     url: ${ML_SERVICE_URL:http://localhost:8000}
   cors:

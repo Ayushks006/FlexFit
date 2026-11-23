@@ -24,6 +24,7 @@
         <javafx.version>21.0.2</javafx.version>
         <javafx-maven-plugin.version>0.0.8</javafx-maven-plugin.version>
         <jackson.version>2.17.2</jackson.version>
+        <jjwt.version>0.12.6</jjwt.version>
         <junit-jupiter.version>5.10.3</junit-jupiter.version>
         <maven-compiler-plugin.version>3.13.0</maven-compiler-plugin.version>
         <maven-surefire-plugin.version>3.3.1</maven-surefire-plugin.version>
@@ -72,6 +73,23 @@
                 <groupId>com.fasterxml.jackson.datatype</groupId>
                 <artifactId>jackson-datatype-jsr310</artifactId>
                 <version>${jackson.version}</version>
+            </dependency>
+
+            <!-- JJWT for JWT Authentication -->
+            <dependency>
+                <groupId>io.jsonwebtoken</groupId>
+                <artifactId>jjwt-api</artifactId>
+                <version>${jjwt.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.jsonwebtoken</groupId>
+                <artifactId>jjwt-impl</artifactId>
+                <version>${jjwt.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.jsonwebtoken</groupId>
+                <artifactId>jjwt-jackson</artifactId>
+                <version>${jjwt.version}</version>
             </dependency>
 
             <!-- Testing -->

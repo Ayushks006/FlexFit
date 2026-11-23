@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.flexfit.desktop.model.BackendHealth;
 import com.flexfit.desktop.service.BackendClient;
+import com.flexfit.desktop.service.ScreenManager;
 import javafx.animation.FadeTransition;
 import javafx.animation.ParallelTransition;
 import javafx.animation.TranslateTransition;
@@ -88,6 +89,16 @@ public class WelcomeController {
 
         // Perform initial non-blocking background check
         handlePingBackend();
+    }
+
+    @FXML
+    private void handleNavigateLogin() {
+        ScreenManager.getInstance().showLogin();
+    }
+
+    @FXML
+    private void handleNavigateRegister() {
+        ScreenManager.getInstance().showRegistration();
     }
 
     private void runEntranceAnimations() {
