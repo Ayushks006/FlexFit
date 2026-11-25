@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Workouts')}"></head>
+<body>
+<div th:replace="~{fragments/layout :: appShell(~{::#pageContent})}">
+    <div id="pageContent" class="page-stack">
+
+        <div th:if="${successMessage}" class="alert alert-success" role="status" th:text="${successMessage}">
+            Workout logged.
+        </div>
+
+        <!-- Workout Summary Metrics -->
+        <section class="metrics-grid">
+            <article class="card metric-card">
+                <div class="metric-label">Workouts This Week</div>
+                <div class="metric-value" th:text="${workoutSummary.weeklyWorkouts}">0</div>
+                <div class="metric-sub" th:text="${#numbers.formatDecimal(workoutSummary.weeklyFrequencyPerWeek, 1, 1) + ' sessions / week'}">0.0 sessions / week</div>
+            </article>
+
+            <article class="card metric-card">
+                <div class="metric-label">Weekly Duration</div>
+                <div class="metric-value" th:text="${workoutSummary.weeklyDurationMin + ' min'}">0 min</div>
+                <div class="metric-sub" th:text="${'All-time: ' + workoutSummary.totalDurationMin + ' min'}">All-time: 0 min</div>
+            </article>
+
+            <article class="card metric-card">
+                <div class="metric-label">Approx. Weekly Burn</div>
+                <div class="metric-value accent-primary" th:text="${workoutSummary.weeklyCaloriesBurned + ' kcal'}">0 kcal</div>
+                <div class="metric-sub">Estimated from session duration &amp; type</div>
+            </article>
+
+            <article class="card metric-card">
+                <div class="metric-label">Total Logged Sessions</div>
+                <div class="metric-value" th:text="${workoutSummary.totalWorkouts}">0</div>
+                <div class="metric-sub" th:text="${'All-time approx: ' + workoutSummary.totalCaloriesBurned + ' kcal'}">All-time approx: 0 kcal</div>
+            </article>
+        </section>
+
+        <!-- Weekly Activity Bar Chart -->
+        <section class="card panel-card">
+            <div class="panel-header">
+                <div>
+                    <h3>7-Day Activity Summary</h3>
+                    <p class="text-muted text-sm">Daily workout minutes over the past 7 days</p>
+                </div>
+                <a href="#logWorkoutSection" class="btn btn-primary btn-sm">Log a Workout</a>
+            </div>
+            <div class="weekly-chart-frame">
+                <div class="weekly-bars">
+                    <div class="day-col" th:each="day : ${workoutSummary.weeklyActivity}">
+                        <div class="bar-track" th:title="${day.totalMinutes + ' min (' + day.sessions + ' sessions)'}">
+                            <div th:if="${day.heightPercent > 0}" class="bar-fill"
+                                 th:style="'height:' + ${day.heightPercent} + '%;'"></div>
+                            <div th:if="${day.heightPercent == 0}" class="bar-empty"></div>
+                        </div>
+                        <span class="day-label" th:text="${day.dayLabel}">Mon</span>
+                    </div>
+                </div>
+                <p class="text-muted text-sm chart-empty-caption" th:if="${workoutSummary.weeklyWorkouts == 0}">
+                    No workouts logged in the last 7 days. Log a session below to start tracking your weekly consistency.
+                </p>
+            </div>
+        </section>
+
+        <!-- Personalized Rule-Based Recommendations -->
+        <section class="page-stack">
+            <div class="panel-header" style="margin-bottom:0;">
+                <div>
+                    <h2>Recommended Workouts for Your Profile</h2>
+                    <p class="text-muted text-sm">
+                        Tailored using your goal, experience, equipment, location, and injury notes.
+                    </p>
+                </div>
+            </div>
+
+            <div class="recommendation-grid">
+                <article class="card rec-card" th:each="rec : ${recommendations}">
+                    <div class="rec-header">
+                        <span class="status-pill" th:text="${rec.category}">Strength</span>
+                        <span class="rec-meta" th:text="${rec.difficulty + ' • ' + rec.estimatedDurationMin + ' min'}">Beginner • 45 min</span>
+                    </div>
+
+                    <h3 th:text="${rec.name}">Workout Name</h3>
+                    <p class="text-muted text-sm" th:text="${rec.description}">Description</p>
+
+                    <div class="rec-calorie-note">
+                        Approx. <strong th:text="${rec.approximateCalories + ' kcal'}">250 kcal</strong> estimated burn
+                    </div>
+
+                    <div class="exercise-list">
+                        <div class="exercise-item" th:each="ex : ${rec.exercises}">
+                            <div class="exercise-main">
+                                <strong th:text="${ex.name}">Exercise</strong>
+                                <span class="text-muted text-sm" th:text="${ex.notes}">Notes</span>
+                            </div>
+                            <div class="exercise-meta">
+                                <span th:text="${ex.setsReps}">3 x 10</span>
+                                <span class="text-muted text-sm" th:text="'Rest: ' + ${ex.restPeriod}">Rest: 60s</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <p class="rec-safety-note" th:text="${rec.safetyNote}">Safety note</p>
+
+                    <form th:action="@{/workouts/log}" method="post" class="rec-log-form">
+                        <input type="hidden" name="title" th:value="${rec.name}">
+                        <input type="hidden" name="workoutType" th:value="${rec.category}">
+                        <input type="hidden" name="durationMin" th:value="${rec.estimatedDurationMin}">
+                        <input type="hidden" name="caloriesBurned" th:value="${rec.approximateCalories}">
+                        <button type="submit" class="btn btn-secondary btn-block">Complete &amp; Log This Workout</button>
+                    </form>
+                </article>
+            </div>
+        </section>
+
+        <!-- Manual Workout Log Form + History -->
+        <section class="two-col-grid" id="logWorkoutSection">
+            <article class="card">
+                <div class="panel-header">
+                    <div>
+                        <h3>Log Completed Workout</h3>
+                        <p class="text-muted text-sm">Record any custom session to your training history.</p>
+                    </div>
+                </div>
+
+                <form th:action="@{/workouts/log}" th:object="${workoutLogRequest}" method="post" class="stack-form" novalidate>
+                    <div class="form-group">
+                        <label for="workoutTitle">Workout Name</label>
+                        <input id="workoutTitle" type="text" th:field="*{title}" placeholder="e.g. Morning Strength Session" required>
+                        <span class="field-error" th:if="${#fields.hasErrors('title')}" th:errors="*{title}"></span>
+                    </div>
+
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="workoutType">Category</label>
+                            <select id="workoutType" th:field="*{workoutType}" required>
+                                <option th:each="cat : ${workoutCategories}" th:value="${cat}" th:text="${cat}"></option>
+                            </select>
+                            <span class="field-error" th:if="${#fields.hasErrors('workoutType')}" th:errors="*{workoutType}"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="durationMin">Duration (min)</label>
+                            <input id="durationMin" type="number" min="1" max="360" th:field="*{durationMin}" required>
+                            <span class="field-error" th:if="${#fields.hasErrors('durationMin')}" th:errors="*{durationMin}"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="caloriesBurned">Estimated Calories Burned (Optional)</label>
+                        <input id="caloriesBurned" type="number" min="0" max="5000" th:field="*{caloriesBurned}"
+                               placeholder="Leave blank to auto-estimate from your weight &amp; duration">
+                        <span class="field-error" th:if="${#fields.hasErrors('caloriesBurned')}" th:errors="*{caloriesBurned}"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="workoutNotes">Notes (Optional)</label>
+                        <textarea id="workoutNotes" rows="2" th:field="*{notes}"
+                                  placeholder="How did the session feel?"></textarea>
+                        <span class="field-error" th:if="${#fields.hasErrors('notes')}" th:errors="*{notes}"></span>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary btn-block">Save Workout Log</button>
+                </form>
+            </article>
+
+            <article class="card">
+                <div class="panel-header">
+                    <div>
+                        <h3>Workout History</h3>
+                        <p class="text-muted text-sm">Your recorded sessions, newest first</p>
+                    </div>
+                </div>
+
+                <div th:if="${#lists.isEmpty(workoutHistory)}" class="empty-panel-body">
+                    <h4>No workout history yet</h4>
+                    <p class="text-muted text-sm">
+                        Complete one of your recommended plans or log a custom session to begin building your history.
+                    </p>
+                    <div style="margin-top:14px;">
+                        <a href="#workoutTitle" class="btn btn-primary btn-sm">Log Your First Workout</a>
+                    </div>
+                </div>
+
+                <div th:if="${!#lists.isEmpty(workoutHistory)}" class="history-list">
+                    <div class="history-item" th:each="item : ${workoutHistory}">
+                        <div class="history-main">
+                            <div class="history-title-row">
+                                <strong th:text="${item.title}">Session</strong>
+                                <span class="status-pill" th:text="${item.workoutType}">Strength</span>
+                            </div>
+                            <div class="text-muted text-sm"
+                                 th:text="${item.durationMin + ' min • ~' + item.caloriesBurned + ' kcal • ' + #temporals.format(item.completedAt, 'MMM dd, yyyy HH:mm')}">
+                                45 min
+                            </div>
+                            <p class="history-notes text-sm" th:if="${item.notes != null && !item.notes.isBlank()}"
+                               th:text="${item.notes}"></p>
+                        </div>
+                        <form th:action="@{/workouts/{id}/delete(id=${item.id})}" method="post">
+                            <button type="submit" class="btn btn-ghost btn-sm" aria-label="Delete workout">Remove</button>
+                        </form>
+                    </div>
+                </div>
+            </article>
+        </section>
+
+    </div>
+</div>
+</body>
+</html>

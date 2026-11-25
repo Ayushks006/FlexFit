@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Edit Fitness Profile')}"></head>
+<body>
+<div th:replace="~{fragments/layout :: appShell(~{::#pageContent})}">
+    <div id="pageContent" class="page-stack">
+
+        <section class="card form-card">
+            <div class="panel-header">
+                <div>
+                    <h2>Edit Fitness Profile</h2>
+                    <p class="text-muted text-sm">Keep your biometrics, equipment, and safety notes up to date.</p>
+                </div>
+                <a th:href="@{/profile}" class="btn btn-ghost btn-sm">Cancel</a>
+            </div>
+
+            <form th:action="@{/profile/edit}" th:object="${profileUpdateRequest}" method="post" class="stack-form" novalidate>
+                <div class="form-section-title">Personal Information</div>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="age">Age</label>
+                        <input id="age" type="number" min="12" max="100" th:field="*{age}" required>
+                        <span class="field-error" th:if="${#fields.hasErrors('age')}" th:errors="*{age}"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="gender">Gender</label>
+                        <select id="gender" th:field="*{gender}" required>
+                            <option th:each="g : ${genders}" th:value="${g}" th:text="${g}"></option>
+                        </select>
+                        <span class="field-error" th:if="${#fields.hasErrors('gender')}" th:errors="*{gender}"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="district">District / City</label>
+                        <input id="district" type="text" th:field="*{district}" required>
+                        <span class="field-error" th:if="${#fields.hasErrors('district')}" th:errors="*{district}"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="state">State</label>
+                        <input id="state" type="text" th:field="*{state}" required>
+                        <span class="field-error" th:if="${#fields.hasErrors('state')}" th:errors="*{state}"></span>
+                    </div>
+                </div>
+
+                <div class="form-section-title">Body Biometrics</div>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="heightCm">Height (cm)</label>
+                        <input id="heightCm" type="number" step="0.1" min="50" max="260" th:field="*{heightCm}" required>
+                        <span class="field-error" th:if="${#fields.hasErrors('heightCm')}" th:errors="*{heightCm}"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="currentWeightKg">Current Weight (kg)</label>
+                        <input id="currentWeightKg" type="number" step="0.1" min="25" max="300" th:field="*{currentWeightKg}" required>
+                        <span class="field-error" th:if="${#fields.hasErrors('currentWeightKg')}" th:errors="*{currentWeightKg}"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="targetWeightKg">Target Weight (kg)</label>
+                        <input id="targetWeightKg" type="number" step="0.1" min="25" max="300" th:field="*{targetWeightKg}" required>
+                        <span class="field-error" th:if="${#fields.hasErrors('targetWeightKg')}" th:errors="*{targetWeightKg}"></span>
+                    </div>
+                </div>
+
+                <div class="form-section-title">Training &amp; Diet</div>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="fitnessGoal">Fitness Goal</label>
+                        <select id="fitnessGoal" th:field="*{fitnessGoal}" required>
+                            <option th:each="goal : ${fitnessGoals}" th:value="${goal}" th:text="${goal}"></option>
+                        </select>
+                        <span class="field-error" th:if="${#fields.hasErrors('fitnessGoal')}" th:errors="*{fitnessGoal}"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="experienceLevel">Experience Level</label>
+                        <select id="experienceLevel" th:field="*{experienceLevel}" required>
+                            <option th:each="lvl : ${experienceLevels}" th:value="${lvl}" th:text="${lvl}"></option>
+                        </select>
+                        <span class="field-error" th:if="${#fields.hasErrors('experienceLevel')}" th:errors="*{experienceLevel}"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="workoutLocation">Workout Location</label>
+                        <select id="workoutLocation" th:field="*{workoutLocation}" required>
+                            <option th:each="loc : ${workoutLocations}" th:value="${loc}" th:text="${loc}"></option>
+                        </select>
+                        <span class="field-error" th:if="${#fields.hasErrors('workoutLocation')}" th:errors="*{workoutLocation}"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="preferredWorkoutDurationMin">Preferred Duration (min)</label>
+                        <select id="preferredWorkoutDurationMin" th:field="*{preferredWorkoutDurationMin}" required>
+                            <option th:each="dur : ${workoutDurations}" th:value="${dur}" th:text="${dur + ' minutes'}"></option>
+                        </select>
+                        <span class="field-error" th:if="${#fields.hasErrors('preferredWorkoutDurationMin')}" th:errors="*{preferredWorkoutDurationMin}"></span>
+                    </div>
+                    <div class="form-group form-span-2">
+                        <label for="dietPreference">Diet Preference</label>
+                        <select id="dietPreference" th:field="*{dietPreference}" required>
+                            <option th:each="diet : ${dietPreferences}" th:value="${diet}" th:text="${diet}"></option>
+                        </select>
+                        <span class="field-error" th:if="${#fields.hasErrors('dietPreference')}" th:errors="*{dietPreference}"></span>
+                    </div>
+                    <div class="form-group form-span-2">
+                        <label>Available Equipment</label>
+                        <div class="checkbox-grid">
+                            <label class="checkbox-pill" th:each="equip : ${equipmentOptions}">
+                                <input type="checkbox" th:field="*{availableEquipment}" th:value="${equip}">
+                                <span th:text="${equip}"></span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-section-title">Safety Notes</div>
+                <div class="stack-form">
+                    <div class="form-group">
+                        <label for="foodAllergies">Food Allergies</label>
+                        <textarea id="foodAllergies" rows="2" th:field="*{foodAllergies}"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="dietaryRestrictions">Dietary Restrictions</label>
+                        <textarea id="dietaryRestrictions" rows="2" th:field="*{dietaryRestrictions}"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="injuriesLimitations">Injuries / Limitations</label>
+                        <textarea id="injuriesLimitations" rows="2" th:field="*{injuriesLimitations}"></textarea>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <a th:href="@{/profile}" class="btn btn-secondary">Cancel</a>
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                </div>
+            </form>
+        </section>
+
+    </div>
+</div>
+</body>
+</html>

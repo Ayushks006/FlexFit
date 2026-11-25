@@ -66,10 +66,15 @@ logs/
 
 # Environment variables & Sensitive data
 .env
-.env.local
-.env.*.local
+.env.*
+!.env.example
 *.pem
 *.key
+*.p12
+*.jks
+*.pfx
+*.dump
+*.bak
 credentials.json
 
 # OS Specific

@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Diet & Nutrition')}"></head>
+<body>
+<div th:replace="~{fragments/layout :: appShell(~{::#pageContent})}">
+    <div id="pageContent" class="page-stack">
+
+        <div th:if="${successMessage}" class="alert alert-success" role="status" th:text="${successMessage}">
+            Meal logged.
+        </div>
+
+        <!-- Missing Profile Guidance -->
+        <section th:if="${!nutritionSummary.target.calculable}" class="card">
+            <div class="panel-header">
+                <div>
+                    <h3>Complete Profile Required for Energy Targets</h3>
+                    <p class="text-muted text-sm" th:text="${nutritionSummary.target.missingProfileFieldsMessage}">
+                        Missing fields
+                    </p>
+                </div>
+                <a th:href="@{/profile/edit}" class="btn btn-primary btn-sm">Update Profile</a>
+            </div>
+        </section>
+
+        <!-- Personalized Nutrition Overview -->
+        <section class="metrics-grid">
+            <article class="card metric-card">
+                <div class="metric-label">Daily Calorie Target</div>
+                <div class="metric-value"
+                     th:text="${nutritionSummary.target.calculable ? nutritionSummary.target.targetCalories + ' kcal' : '--'}">--</div>
+                <div class="metric-sub"
+                     th:text="${nutritionSummary.target.calculable ? 'Est. BMR: ' + nutritionSummary.target.bmrCalories + ' kcal' : 'Profile required'}">--</div>
+            </article>
+
+            <article class="card metric-card">
+                <div class="metric-label">Consumed (<span th:text="${#temporals.format(selectedDate, 'MMM dd')}">Today</span>)</div>
+                <div class="metric-value accent-primary" th:text="${nutritionSummary.caloriesConsumed + ' kcal'}">0 kcal</div>
+                <div class="metric-sub"
+                     th:text="${nutritionSummary.mealsLoggedCount + ' meal(s) logged'}">0 meal(s) logged</div>
+            </article>
+
+            <article class="card metric-card">
+                <div class="metric-label">Remaining Calories</div>
+                <div class="metric-value"
+                     th:text="${nutritionSummary.target.calculable ? nutritionSummary.remainingCalories + ' kcal' : '--'}">--</div>
+                <div class="metric-sub"
+                     th:text="${nutritionSummary.target.calculable ? nutritionSummary.calorieProgressPercent + '% of daily target' : '--'}">--</div>
+            </article>
+
+            <article class="card metric-card">
+                <div class="metric-label">Diet Preference</div>
+                <div class="metric-value metric-value-sm"
+                     th:text="${profile != null && profile.dietPreference != null ? profile.dietPreference : 'Not set'}">--</div>
+                <div class="metric-sub"
+                     th:text="${profile != null && profile.foodAllergies != null && !profile.foodAllergies.isBlank() ? 'Allergies: ' + profile.foodAllergies : 'No allergies listed'}">--</div>
+            </article>
+        </section>
+
+        <!-- Macro Progress Bars & Assumptions -->
+        <section th:if="${nutritionSummary.target.calculable}" class="card">
+            <div class="panel-header">
+                <div>
+                    <h3>Daily Macronutrient Progress</h3>
+                    <p class="text-muted text-sm" th:text="${nutritionSummary.target.activityAssumption}">Activity assumption</p>
+                </div>
+                <form th:action="@{/nutrition}" method="get" class="date-filter-form">
+                    <label for="viewDate" class="text-sm text-muted">Day:</label>
+                    <input id="viewDate" type="date" name="date" th:value="${selectedDate}" onchange="this.form.submit()">
+                </form>
+            </div>
+
+            <div class="macro-bars-grid">
+                <div class="macro-bar-card">
+                    <div class="macro-bar-top">
+                        <strong>Calories</strong>
+                        <span th:text="${nutritionSummary.caloriesConsumed + ' / ' + nutritionSummary.target.targetCalories + ' kcal'}">0 / 2000 kcal</span>
+                    </div>
+                    <div class="progress-track">
+                        <div class="progress-fill" th:style="'width:' + ${nutritionSummary.calorieProgressPercent} + '%;'"></div>
+                    </div>
+                    <span class="text-muted text-sm" th:text="${nutritionSummary.remainingCalories + ' kcal remaining'}">0 kcal remaining</span>
+                </div>
+
+                <div class="macro-bar-card">
+                    <div class="macro-bar-top">
+                        <strong>Protein</strong>
+                        <span th:text="${nutritionSummary.proteinConsumedG + ' / ' + nutritionSummary.target.proteinTargetG + ' g'}">0 / 130 g</span>
+                    </div>
+                    <div class="progress-track">
+                        <div class="progress-fill" th:style="'width:' + ${nutritionSummary.proteinProgressPercent} + '%;'"></div>
+                    </div>
+                    <span class="text-muted text-sm" th:text="${nutritionSummary.remainingProteinG + ' g remaining'}">0 g remaining</span>
+                </div>
+
+                <div class="macro-bar-card">
+                    <div class="macro-bar-top">
+                        <strong>Carbohydrates</strong>
+                        <span th:text="${nutritionSummary.carbsConsumedG + ' / ' + nutritionSummary.target.carbsTargetG + ' g'}">0 / 220 g</span>
+                    </div>
+                    <div class="progress-track">
+                        <div class="progress-fill" th:style="'width:' + ${nutritionSummary.carbsProgressPercent} + '%;'"></div>
+                    </div>
+                    <span class="text-muted text-sm" th:text="${nutritionSummary.remainingCarbsG + ' g remaining'}">0 g remaining</span>
+                </div>
+
+                <div class="macro-bar-card">
+                    <div class="macro-bar-top">
+                        <strong>Fats</strong>
+                        <span th:text="${nutritionSummary.fatsConsumedG + ' / ' + nutritionSummary.target.fatsTargetG + ' g'}">0 / 60 g</span>
+                    </div>
+                    <div class="progress-track">
+                        <div class="progress-fill" th:style="'width:' + ${nutritionSummary.fatsProgressPercent} + '%;'"></div>
+                    </div>
+                    <span class="text-muted text-sm" th:text="${nutritionSummary.remainingFatsG + ' g remaining'}">0 g remaining</span>
+                </div>
+            </div>
+
+            <p class="nutrition-disclaimer text-sm text-muted">
+                <strong th:text="${nutritionSummary.target.goalAdjustmentNote}">Goal note</strong>
+                &mdash; <span th:text="${nutritionSummary.target.disclaimer}">Disclaimer</span>
+            </p>
+        </section>
+
+        <!-- Log Meal Form + Daily Breakdown -->
+        <section class="two-col-grid" id="logMealSection">
+            <article class="card">
+                <div class="panel-header">
+                    <div>
+                        <h3>Log a Meal</h3>
+                        <p class="text-muted text-sm">Record calories and macros for today or a previous date.</p>
+                    </div>
+                </div>
+
+                <form th:action="@{/nutrition/log}" th:object="${nutritionLogRequest}" method="post" class="stack-form" novalidate>
+                    <div class="form-group">
+                        <label for="mealName">Meal Name</label>
+                        <input id="mealName" type="text" th:field="*{mealName}" placeholder="e.g. Grilled Paneer &amp; Dal Bowl" required>
+                        <span class="field-error" th:if="${#fields.hasErrors('mealName')}" th:errors="*{mealName}"></span>
+                    </div>
+
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="mealType">Meal Category</label>
+                            <select id="mealType" th:field="*{mealType}" required>
+                                <option th:each="cat : ${mealCategories}" th:value="${cat}" th:text="${cat}"></option>
+                            </select>
+                            <span class="field-error" th:if="${#fields.hasErrors('mealType')}" th:errors="*{mealType}"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="loggedDate">Logged Date</label>
+                            <input id="loggedDate" type="date" th:field="*{loggedDate}" required>
+                            <span class="field-error" th:if="${#fields.hasErrors('loggedDate')}" th:errors="*{loggedDate}"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="mealCalories">Calories (kcal)</label>
+                            <input id="mealCalories" type="number" min="0" max="10000" th:field="*{calories}" required>
+                            <span class="field-error" th:if="${#fields.hasErrors('calories')}" th:errors="*{calories}"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="proteinG">Protein (g)</label>
+                            <input id="proteinG" type="number" step="0.01" min="0" max="1000" th:field="*{proteinG}" required>
+                            <span class="field-error" th:if="${#fields.hasErrors('proteinG')}" th:errors="*{proteinG}"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="carbsG">Carbohydrates (g)</label>
+                            <input id="carbsG" type="number" step="0.01" min="0" max="1000" th:field="*{carbsG}" required>
+                            <span class="field-error" th:if="${#fields.hasErrors('carbsG')}" th:errors="*{carbsG}"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="fatsG">Fat (g)</label>
+                            <input id="fatsG" type="number" step="0.01" min="0" max="1000" th:field="*{fatsG}" required>
+                            <span class="field-error" th:if="${#fields.hasErrors('fatsG')}" th:errors="*{fatsG}"></span>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary btn-block">Save Meal Entry</button>
+                </form>
+            </article>
+
+            <!-- Daily Meal Breakdown by Category -->
+            <article class="card">
+                <div class="panel-header">
+                    <div>
+                        <h3>Daily Meal Breakdown</h3>
+                        <p class="text-muted text-sm" th:text="${'Grouped meals for ' + #temporals.format(selectedDate, 'MMM dd, yyyy')}">Grouped meals</p>
+                    </div>
+                </div>
+
+                <div th:if="${nutritionSummary.mealsLoggedCount == 0}" class="empty-panel-body">
+                    <h4>No meals logged for this date</h4>
+                    <p class="text-muted text-sm">Use the form to log Breakfast, Lunch, Dinner, or Snacks.</p>
+                </div>
+
+                <div th:if="${nutritionSummary.mealsLoggedCount > 0}" class="meal-groups-stack">
+                    <div class="meal-group-block" th:each="entry : ${nutritionSummary.mealsByType}"
+                         th:if="${!#lists.isEmpty(entry.value)}">
+                        <div class="meal-group-title" th:text="${entry.key}">Breakfast</div>
+                        <div class="history-item" th:each="meal : ${entry.value}">
+                            <div class="history-main">
+                                <strong th:text="${meal.mealName}">Oatmeal</strong>
+                                <div class="text-muted text-sm"
+                                     th:text="${meal.calories + ' kcal • P ' + meal.proteinG + 'g • C ' + meal.carbsG + 'g • F ' + meal.fatsG + 'g'}">
+                                    300 kcal
+                                </div>
+                            </div>
+                            <form th:action="@{/nutrition/{id}/delete(id=${meal.id}, date=${selectedDate})}" method="post"
+                                  onsubmit="return confirm('Delete this meal entry?');">
+                                <button type="submit" class="btn btn-ghost btn-sm">Delete</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </article>
+        </section>
+
+        <!-- Rule-Based Food Recommendations -->
+        <section class="page-stack">
+            <div class="panel-header" style="margin-bottom:0;">
+                <div>
+                    <h2>Rule-Based Food Suggestions</h2>
+                    <p class="text-muted text-sm">
+                        Matched to your dietary preference, remaining daily targets, and recorded allergies/restrictions.
+                    </p>
+                </div>
+            </div>
+
+            <div th:if="${#lists.isEmpty(foodRecommendations)}" class="card empty-panel-body">
+                <h4>No matching catalog foods after allergy filters</h4>
+                <p class="text-muted text-sm">Log custom meals directly using your own nutritional labels.</p>
+            </div>
+
+            <div th:if="${!#lists.isEmpty(foodRecommendations)}" class="food-rec-grid">
+                <article class="card rec-card" th:each="food : ${foodRecommendations}">
+                    <div class="rec-header">
+                        <span class="status-pill" th:text="${food.category}">Vegetarian</span>
+                        <span class="rec-meta" th:text="${food.mealSlot}">Lunch</span>
+                    </div>
+                    <h3 th:text="${food.name}">Food Name</h3>
+                    <p class="text-muted text-sm" th:text="${'Serving: ' + food.servingSize}">Serving</p>
+                    <div class="rec-calorie-note"
+                         th:text="${'~' + food.approxCalories + ' kcal • P ' + food.approxProteinG + 'g • C ' + food.approxCarbsG + 'g • F ' + food.approxFatsG + 'g'}">
+                        ~300 kcal
+                    </div>
+                    <p class="rec-safety-note" th:text="${food.reason}">Rule-based match</p>
+                </article>
+            </div>
+        </section>
+
+        <!-- Nutrition History with Date Filter -->
+        <section class="card">
+            <div class="panel-header">
+                <div>
+                    <h3>Nutrition History</h3>
+                    <p class="text-muted text-sm">Browse all logged meals or filter by a specific date.</p>
+                </div>
+                <form th:action="@{/nutrition}" method="get" class="date-filter-form">
+                    <input type="hidden" name="date" th:value="${selectedDate}">
+                    <input type="date" name="historyDate" th:value="${historyDate}" aria-label="Filter history by date">
+                    <button type="submit" class="btn btn-secondary btn-sm">Filter</button>
+                    <a th:if="${historyDate != null}" th:href="@{/nutrition(date=${selectedDate})}" class="btn btn-ghost btn-sm">Clear</a>
+                </form>
+            </div>
+
+            <div th:if="${#lists.isEmpty(nutritionHistory)}" class="empty-panel-body">
+                <h4>No meal history found</h4>
+                <p class="text-muted text-sm">Logged meals will appear here with full calorie and macro breakdowns.</p>
+            </div>
+
+            <div th:if="${!#lists.isEmpty(nutritionHistory)}" class="history-list">
+                <div class="history-item" th:each="h : ${nutritionHistory}">
+                    <div class="history-main">
+                        <div class="history-title-row">
+                            <strong th:text="${h.mealName}">Meal</strong>
+                            <span class="status-pill" th:text="${h.mealType}">Lunch</span>
+                        </div>
+                        <div class="text-muted text-sm"
+                             th:text="${#temporals.format(h.loggedDate, 'MMM dd, yyyy') + ' • ' + h.calories + ' kcal • P ' + h.proteinG + 'g • C ' + h.carbsG + 'g • F ' + h.fatsG + 'g'}">
+                            Date
+                        </div>
+                    </div>
+                    <form th:action="@{/nutrition/{id}/delete(id=${h.id}, date=${selectedDate})}" method="post"
+                          onsubmit="return confirm('Delete this meal entry?');">
+                        <button type="submit" class="btn btn-ghost btn-sm">Delete</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+    </div>
+</div>
+</body>
+</html>

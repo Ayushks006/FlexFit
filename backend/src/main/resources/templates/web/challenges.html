@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Fitness Challenges')}"></head>
+<body>
+<div th:replace="~{fragments/layout :: appShell(~{::#pageContent})}">
+    <div id="pageContent" class="page-stack">
+
+        <div th:if="${successMessage}" class="alert alert-success" role="status" th:text="${successMessage}">
+            Challenge joined.
+        </div>
+        <div th:if="${errorMessage}" class="alert alert-error" role="alert" th:text="${errorMessage}">
+            Challenge notice.
+        </div>
+
+        <!-- Challenge Summary Metrics -->
+        <section class="metrics-grid">
+            <article class="card metric-card">
+                <div class="metric-label">Total Points Earned</div>
+                <div class="metric-value accent-primary" th:text="${overview.totalPoints + ' pts'}">0 pts</div>
+                <div class="metric-sub">Earned from completed challenges</div>
+            </article>
+
+            <article class="card metric-card">
+                <div class="metric-label">Active Challenges</div>
+                <div class="metric-value" th:text="${overview.activeCount}">0</div>
+                <div class="metric-sub">Currently in progress</div>
+            </article>
+
+            <article class="card metric-card">
+                <div class="metric-label">Completed Challenges</div>
+                <div class="metric-value" th:text="${overview.completedCount}">0</div>
+                <div class="metric-sub">Verified milestones</div>
+            </article>
+
+            <article class="card metric-card">
+                <div class="metric-label">Available to Join</div>
+                <div class="metric-value" th:text="${overview.availableCount}">0</div>
+                <div class="metric-sub">
+                    <a th:href="@{/leaderboard}" class="link-accent">View Leaderboard &rarr;</a>
+                </div>
+            </article>
+        </section>
+
+        <!-- Challenges Catalog -->
+        <section class="page-stack">
+            <div class="panel-header" style="margin-bottom:0;">
+                <div>
+                    <h2>Active Fitness Challenges</h2>
+                    <p class="text-muted text-sm">
+                        Join a challenge and build momentum. Progress updates automatically from your real workout and meal logs.
+                    </p>
+                </div>
+            </div>
+
+            <div th:if="${#lists.isEmpty(overview.challenges)}" class="card empty-panel-body">
+                <h4>No active challenges available right now</h4>
+                <p class="text-muted text-sm">Check back soon for new community challenges.</p>
+            </div>
+
+            <div th:if="${!#lists.isEmpty(overview.challenges)}" class="challenge-grid">
+                <article class="card rec-card" th:each="ch : ${overview.challenges}">
+                    <div class="rec-header">
+                        <span class="status-pill" th:text="${ch.category}">Consistency</span>
+                        <span class="challenge-status-badge"
+                              th:classappend="${ch.status == 'Completed' ? ' is-completed' : (ch.status == 'In Progress' ? ' is-active' : ' is-available')}"
+                              th:text="${ch.status}">Available</span>
+                    </div>
+
+                    <h3 th:text="${ch.title}">Challenge Title</h3>
+                    <p class="text-muted text-sm" th:text="${ch.description}">Description</p>
+
+                    <div class="rec-calorie-note">
+                        Reward: <strong th:text="${ch.pointsReward + ' pts'}">150 pts</strong>
+                        &bull; Target: <strong th:text="${ch.targetCount}">7</strong>
+                    </div>
+
+                    <div th:if="${ch.status != 'Available'}" class="challenge-progress-box">
+                        <div class="macro-bar-top">
+                            <span>Progress</span>
+                            <strong th:text="${ch.progressCount + ' / ' + ch.targetCount + ' (' + ch.progressPercent + '%)'}">0 / 7</strong>
+                        </div>
+                        <div class="progress-track" style="margin:6px 0 0;">
+                            <div class="progress-fill" th:style="'width:' + ${ch.progressPercent} + '%;'"></div>
+                        </div>
+                    </div>
+
+                    <div class="rec-log-form">
+                        <form th:if="${ch.status == 'Available'}" th:action="@{/challenges/{id}/join(id=${ch.id})}" method="post">
+                            <button type="submit" class="btn btn-primary btn-block">Join Challenge</button>
+                        </form>
+                        <div th:if="${ch.status == 'In Progress'}" class="btn btn-secondary btn-block" style="cursor:default;">
+                            In Progress &mdash; Synced Automatically
+                        </div>
+                        <div th:if="${ch.status == 'Completed'}" class="challenge-completed-pill">
+                            Completed &bull; +<span th:text="${ch.pointsReward}">150</span> pts Awarded
+                        </div>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+    </div>
+</div>
+</body>
+</html>

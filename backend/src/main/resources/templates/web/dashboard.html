@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Dashboard')}"></head>
+<body>
+<div th:replace="~{fragments/layout :: appShell(~{::#pageContent})}">
+    <div id="pageContent" class="page-stack">
+
+        <!-- Welcome & Completion Banner -->
+        <section class="card hero-banner">
+            <div class="hero-banner-text">
+                <span class="eyebrow-badge">Athlete Overview</span>
+                <h2 th:text="'Welcome back, ' + (${currentUser != null ? currentUser.fullName : 'Athlete'}) + '!'">
+                    Welcome back, Athlete!
+                </h2>
+                <p class="text-muted">
+                    Your biometric baseline and training preferences are synced and ready.
+                </p>
+            </div>
+
+            <div class="completion-widget">
+                <div class="completion-header">
+                    <span class="completion-title">Profile Completion</span>
+                    <span class="completion-percent" th:text="${completionPercentage + '%'}">0%</span>
+                </div>
+                <div class="progress-track">
+                    <div class="progress-fill"
+                         th:style="'width:' + ${completionPercentage} + '%;'"></div>
+                </div>
+                <p class="completion-subtitle"
+                   th:classappend="${completionPercentage >= 100} ? ' is-complete' : ' is-partial'"
+                   th:text="${completionSubtitle}">0% Profile Completed</p>
+            </div>
+        </section>
+
+        <!-- Primary Biometric Metrics -->
+        <section th:if="${profile != null}" class="metrics-grid">
+            <article class="card metric-card">
+                <div class="metric-label">Current Weight</div>
+                <div class="metric-value"
+                     th:text="${profile.currentWeightKg != null ? profile.currentWeightKg + ' kg' : '--'}">--</div>
+                <div class="metric-sub"
+                     th:text="${profile.heightCm != null ? 'Height: ' + profile.heightCm + ' cm' : 'Height not set'}">--</div>
+            </article>
+
+            <article class="card metric-card">
+                <div class="metric-label">Target Weight</div>
+                <div class="metric-value"
+                     th:text="${profile.targetWeightKg != null ? profile.targetWeightKg + ' kg' : '--'}">--</div>
+                <div class="metric-sub" th:if="${weightDelta != null}">
+                    <span th:if="${weightDelta.signum() == 0}">At target weight</span>
+                    <span th:if="${weightDelta.signum() > 0}" th:text="'+' + ${weightDelta} + ' kg to target'"></span>
+                    <span th:if="${weightDelta.signum() < 0}" th:text="${weightDelta} + ' kg to target'"></span>
+                </div>
+                <div class="metric-sub" th:if="${weightDelta == null}">No target set</div>
+            </article>
+
+            <article class="card metric-card">
+                <div class="metric-label">Body Mass Index (BMI)</div>
+                <div class="metric-value accent-primary"
+                     th:text="${profile.bmi != null ? profile.bmi : '--'}">--</div>
+                <div class="metric-sub">
+                    <span class="status-pill" th:text="${bmiCategory}">--</span>
+                </div>
+            </article>
+
+            <article class="card metric-card">
+                <div class="metric-label">Primary Goal</div>
+                <div class="metric-value metric-value-sm"
+                     th:text="${profile.fitnessGoal != null ? profile.fitnessGoal : '--'}">--</div>
+                <div class="metric-sub"
+                     th:text="${profile.experienceLevel != null ? profile.experienceLevel + ' • ' + profile.workoutLocation : '--'}">--</div>
+            </article>
+        </section>
+
+        <section th:if="${profile == null}" class="card empty-state-card">
+            <h3>No Fitness Profile Found</h3>
+            <p class="text-muted">Complete your biometric profile to unlock personalized targets and BMI tracking.</p>
+            <a th:href="@{/profile/edit}" class="btn btn-primary">Set Up Profile</a>
+        </section>
+
+        <!-- Progress & Activity Row -->
+        <section class="two-col-grid">
+            <article class="card panel-card">
+                <div class="panel-header">
+                    <div>
+                        <h3>Workout Progress</h3>
+                        <p class="text-muted text-sm">Session completion &amp; training volume</p>
+                    </div>
+                    <a th:href="@{/workouts}" class="link-accent text-sm">Open Workouts</a>
+                </div>
+                <div th:if="${workoutSummary != null && workoutSummary.totalWorkouts > 0}" class="summary-grid" style="margin:0;">
+                    <div class="summary-item">
+                        <span class="stat-label">This Week</span>
+                        <span class="stat-value" th:text="${workoutSummary.weeklyWorkouts + ' sessions'}">0</span>
+                    </div>
+                    <div class="summary-item">
+                        <span class="stat-label">Weekly Duration</span>
+                        <span class="stat-value" th:text="${workoutSummary.weeklyDurationMin + ' min'}">0 min</span>
+                    </div>
+                    <div class="summary-item">
+                        <span class="stat-label">Approx. Burn</span>
+                        <span class="stat-value" th:text="${workoutSummary.weeklyCaloriesBurned + ' kcal'}">0 kcal</span>
+                    </div>
+                    <div class="summary-item">
+                        <span class="stat-label">All-Time Total</span>
+                        <span class="stat-value" th:text="${workoutSummary.totalWorkouts + ' sessions'}">0</span>
+                    </div>
+                </div>
+                <div th:if="${workoutSummary == null || workoutSummary.totalWorkouts == 0}" class="empty-panel-body">
+                    <div class="empty-icon" aria-hidden="true">
+                        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                            <path d="M6.5 6.5h11M6.5 17.5h11M4 10v4M20 10v4M8 7v10M16 7v10"></path>
+                        </svg>
+                    </div>
+                    <h4>No workouts logged yet</h4>
+                    <p class="text-muted text-sm">
+                        Preferred session duration:
+                        <strong th:text="${profile != null && profile.preferredWorkoutDurationMin != null ? profile.preferredWorkoutDurationMin + ' min' : 'Not set'}">--</strong>.
+                        Log your first session in the Workouts module.
+                    </p>
+                </div>
+            </article>
+
+            <article class="card panel-card">
+                <div class="panel-header">
+                    <div>
+                        <h3>Daily Nutrition Summary</h3>
+                        <p class="text-muted text-sm">Today's calorie &amp; macronutrient intake</p>
+                    </div>
+                    <a th:href="@{/nutrition}" class="link-accent text-sm">Open Nutrition</a>
+                </div>
+                <div th:if="${nutritionSummary != null && nutritionSummary.mealsLoggedCount > 0}" class="summary-grid" style="margin:0;">
+                    <div class="summary-item">
+                        <span class="stat-label">Calories Today</span>
+                        <span class="stat-value"
+                              th:text="${nutritionSummary.target.calculable ? nutritionSummary.caloriesConsumed + ' / ' + nutritionSummary.target.targetCalories + ' kcal' : nutritionSummary.caloriesConsumed + ' kcal'}">0 kcal</span>
+                    </div>
+                    <div class="summary-item">
+                        <span class="stat-label">Meals Logged</span>
+                        <span class="stat-value" th:text="${nutritionSummary.mealsLoggedCount}">0</span>
+                    </div>
+                    <div class="summary-item">
+                        <span class="stat-label">Protein</span>
+                        <span class="stat-value" th:text="${nutritionSummary.proteinConsumedG + ' g'}">0 g</span>
+                    </div>
+                    <div class="summary-item">
+                        <span class="stat-label">Carbs / Fats</span>
+                        <span class="stat-value" th:text="${nutritionSummary.carbsConsumedG + 'g / ' + nutritionSummary.fatsConsumedG + 'g'}">0g / 0g</span>
+                    </div>
+                </div>
+                <div th:if="${nutritionSummary == null || nutritionSummary.mealsLoggedCount == 0}" class="empty-panel-body">
+                    <div class="empty-icon" aria-hidden="true">
+                        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+                        </svg>
+                    </div>
+                    <h4>No daily nutrition logged yet</h4>
+                    <p class="text-muted text-sm">
+                        <span th:if="${nutritionSummary != null && nutritionSummary.target.calculable}"
+                              th:text="'Estimated target: ' + ${nutritionSummary.target.targetCalories} + ' kcal/day. '"></span>
+                        Log your first meal in Diet &amp; Nutrition.
+                    </p>
+                </div>
+            </article>
+        </section>
+
+        <!-- Weekly Progress Visualization -->
+        <section class="card panel-card">
+            <div class="panel-header">
+                <div>
+                    <h3>Weekly Progress Visualization</h3>
+                    <p class="text-muted text-sm">7-day training duration overview</p>
+                </div>
+                <span class="status-pill"
+                      th:text="${workoutSummary != null && workoutSummary.weeklyWorkouts > 0 ? workoutSummary.weeklyWorkouts + ' Sessions This Week' : 'Awaiting First Session'}">Awaiting First Session</span>
+            </div>
+
+            <div class="weekly-chart-frame" role="img" aria-label="7-day workout activity chart">
+                <div class="weekly-bars" th:if="${workoutSummary != null && workoutSummary.weeklyActivity != null}">
+                    <div class="day-col" th:each="day : ${workoutSummary.weeklyActivity}">
+                        <div class="bar-track" th:title="${day.totalMinutes + ' min (' + day.sessions + ' sessions)'}">
+                            <div th:if="${day.heightPercent > 0}" class="bar-fill"
+                                 th:style="'height:' + ${day.heightPercent} + '%;'"></div>
+                            <div th:if="${day.heightPercent == 0}" class="bar-empty"></div>
+                        </div>
+                        <span class="day-label" th:text="${day.dayLabel}">Mon</span>
+                    </div>
+                </div>
+                <p class="text-muted text-sm chart-empty-caption"
+                   th:if="${workoutSummary == null || workoutSummary.weeklyWorkouts == 0}">
+                    No workout sessions recorded this week. Completed sessions will automatically populate this 7-day chart.
+                </p>
+            </div>
+        </section>
+
+        <!-- Challenges & Points Summary -->
+        <section class="card panel-card" th:if="${challengesOverview != null}">
+            <div class="panel-header">
+                <div>
+                    <h3>Challenges &amp; Points</h3>
+                    <p class="text-muted text-sm">Real-time progress synced from your logged workouts and meals</p>
+                </div>
+                <div class="topbar-actions">
+                    <a th:href="@{/challenges}" class="link-accent text-sm">All Challenges</a>
+                    <a th:href="@{/leaderboard}" class="btn btn-secondary btn-sm">Leaderboard</a>
+                </div>
+            </div>
+
+            <div class="summary-grid" style="margin:0;">
+                <div class="summary-item">
+                    <span class="stat-label">Challenge Points</span>
+                    <span class="stat-value accent-primary" th:text="${challengesOverview.totalPoints + ' pts'}">0 pts</span>
+                </div>
+                <div class="summary-item">
+                    <span class="stat-label">Active Challenges</span>
+                    <span class="stat-value" th:text="${challengesOverview.activeCount}">0</span>
+                </div>
+                <div class="summary-item">
+                    <span class="stat-label">Completed</span>
+                    <span class="stat-value" th:text="${challengesOverview.completedCount}">0</span>
+                </div>
+                <div class="summary-item">
+                    <span class="stat-label">Available to Join</span>
+                    <span class="stat-value" th:text="${challengesOverview.availableCount}">0</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Quick Actions & Future Modules -->
+        <section class="panel-card">
+            <div class="section-heading">
+                <h3>Quick Actions &amp; Modules</h3>
+            </div>
+            <div class="quick-grid">
+                <a th:href="@{/profile/edit}" class="card quick-card">
+                    <span class="quick-tag">Profile</span>
+                    <h4>Update Biometrics</h4>
+                    <p class="text-muted text-sm">Adjust weight, target, equipment, or safety notes.</p>
+                </a>
+                <a th:href="@{/workouts}" class="card quick-card">
+                    <span class="quick-tag">Module</span>
+                    <h4>Workouts</h4>
+                    <p class="text-muted text-sm">Explore upcoming adaptive training plans.</p>
+                </a>
+                <a th:href="@{/nutrition}" class="card quick-card">
+                    <span class="quick-tag">Module</span>
+                    <h4>Diet &amp; Nutrition</h4>
+                    <p class="text-muted text-sm">View upcoming macro &amp; meal planning tools.</p>
+                </a>
+                <a th:href="@{/challenges}" class="card quick-card">
+                    <span class="quick-tag">Community</span>
+                    <h4>Challenges &amp; Ranks</h4>
+                    <p class="text-muted text-sm">Preview streak challenges and leaderboards.</p>
+                </a>
+            </div>
+        </section>
+
+    </div>
+</div>
+</body>
+</html>

@@ -52,4 +52,12 @@ class JwtTokenProviderTest {
 
         assertFalse(shortLivedProvider.validateToken(token));
     }
+
+    @Test
+    @DisplayName("JwtTokenProvider fails startup when secret is missing or weaker than 32 bytes")
+    void testMissingOrWeakSecretFailsStartup() {
+        assertThrows(IllegalStateException.class, () -> new JwtTokenProvider("", expirationMs));
+        assertThrows(IllegalStateException.class, () -> new JwtTokenProvider("   ", expirationMs));
+        assertThrows(IllegalStateException.class, () -> new JwtTokenProvider("too_short_secret", expirationMs));
+    }
 }

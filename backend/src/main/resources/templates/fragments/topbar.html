@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<body>
+<header th:fragment="topbar" class="topbar">
+    <div class="topbar-left">
+        <button type="button" class="icon-btn mobile-only" id="sidebarOpenBtn" aria-label="Open navigation">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="3" y1="6" x2="21" y2="6"></line>
+                <line x1="3" y1="12" x2="21" y2="12"></line>
+                <line x1="3" y1="18" x2="21" y2="18"></line>
+            </svg>
+        </button>
+        <div>
+            <h1 class="topbar-title" th:text="${pageTitle != null ? pageTitle : 'Dashboard'}">Dashboard</h1>
+        </div>
+    </div>
+
+    <div class="topbar-actions">
+        <a th:href="@{/workouts#logWorkoutSection}" class="btn btn-primary btn-sm">Log Workout</a>
+        <a th:href="@{/profile/edit}" class="btn btn-secondary btn-sm">Edit Profile</a>
+        <a th:href="@{/profile}" class="user-badge" th:if="${currentUser != null}"
+           th:text="'@' + ${currentUser.username}">@athlete</a>
+    </div>
+</header>
+</body>
+</html>

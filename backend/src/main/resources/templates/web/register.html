@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Create Account')}"></head>
+<body class="public-body auth-body">
+
+<main class="wizard-container">
+    <div class="auth-brand-top">
+        <a th:href="@{/}" class="brand-logo">
+            <span class="brand-mark" aria-hidden="true">FF</span>
+            <span class="brand-text">Flex<span>Fit</span></span>
+        </a>
+    </div>
+
+    <section class="card wizard-card" id="registrationWizard"
+             th:attr="data-initial-step=${initialStep != null ? initialStep : 1}">
+        <div class="wizard-header">
+            <div>
+                <span class="step-badge" id="stepIndicator">Step 1 of 6</span>
+                <h1 id="stepTitle">Account Information</h1>
+            </div>
+            <a th:href="@{/login}" class="btn btn-ghost btn-sm">Sign In Instead</a>
+        </div>
+
+        <div class="progress-track" aria-hidden="true">
+            <div class="progress-fill" id="wizardProgressFill" style="width: 16.67%;"></div>
+        </div>
+
+        <div th:if="${errorMessage}" class="alert alert-error" role="alert" th:text="${errorMessage}">
+            Registration error
+        </div>
+
+        <div id="wizardClientError" class="alert alert-error hidden" role="alert"></div>
+
+        <form th:action="@{/register}" th:object="${registerRequest}" method="post" id="registerForm" novalidate>
+
+            <!-- Step 1: Account Information -->
+            <div class="wizard-step" data-step="1" data-title="Account Information">
+                <div class="form-grid">
+                    <div class="form-group form-span-2">
+                        <label for="fullName">Full Name</label>
+                        <input id="fullName" type="text" th:field="*{fullName}" placeholder="Your full name" required>
+                        <span class="field-error" th:if="${#fields.hasErrors('fullName')}" th:errors="*{fullName}"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="username">Username</label>
+                        <input id="username" type="text" th:field="*{username}" placeholder="alphanumeric, ., _, -" required>
+                        <span class="field-error" th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <input id="email" type="email" th:field="*{email}" placeholder="you@example.com" required>
+                        <span class="field-error" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="regPassword">Password</label>
+                        <div class="password-input-wrap">
+                            <input id="regPassword" type="password" th:field="*{password}" placeholder="Minimum 6 characters" required>
+                            <button type="button" class="toggle-password-btn" data-toggle-target="regPassword">Show</button>
+                        </div>
+                        <span class="field-error" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="confirmPassword">Confirm Password</label>
+                        <div class="password-input-wrap">
+                            <input id="confirmPassword" type="password" th:field="*{confirmPassword}" placeholder="Re-enter password" required>
+                            <button type="button" class="toggle-password-btn" data-toggle-target="confirmPassword">Show</button>
+                        </div>
+                        <span class="field-error" th:if="${#fields.hasErrors('confirmPassword')}" th:errors="*{confirmPassword}"></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 2: Personal Information -->
+            <div class="wizard-step hidden" data-step="2" data-title="Personal Information">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="age">Age (12–100)</label>
+                        <input id="age" type="number" min="12" max="100" th:field="*{age}" required>
+                        <span class="field-error" th:if="${#fields.hasErrors('age')}" th:errors="*{age}"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="gender">Gender</label>
+                        <select id="gender" th:field="*{gender}" required>
+                            <option th:each="g : ${genders}" th:value="${g}" th:text="${g}"></option>
+                        </select>
+                        <span class="field-error" th:if="${#fields.hasErrors('gender')}" th:errors="*{gender}"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="district">District / City</label>
+                        <input id="district" type="text" th:field="*{district}" placeholder="Your district or city" required>
+                        <span class="field-error" th:if="${#fields.hasErrors('district')}" th:errors="*{district}"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="state">State / Region</label>
+                        <input id="state" type="text" th:field="*{state}" placeholder="Your state" required>
+                        <span class="field-error" th:if="${#fields.hasErrors('state')}" th:errors="*{state}"></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 3: Body Information -->
+            <div class="wizard-step hidden" data-step="3" data-title="Body Biometrics">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="heightCm">Height (cm)</label>
+                        <input id="heightCm" type="number" step="0.1" min="50" max="260" th:field="*{heightCm}" placeholder="e.g. 175.0" required>
+                        <span class="field-error" th:if="${#fields.hasErrors('heightCm')}" th:errors="*{heightCm}"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="currentWeightKg">Current Weight (kg)</label>
+                        <input id="currentWeightKg" type="number" step="0.1" min="25" max="300" th:field="*{currentWeightKg}" placeholder="e.g. 74.0" required>
+                        <span class="field-error" th:if="${#fields.hasErrors('currentWeightKg')}" th:errors="*{currentWeightKg}"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="targetWeightKg">Target Weight (kg)</label>
+                        <input id="targetWeightKg" type="number" step="0.1" min="25" max="300" th:field="*{targetWeightKg}" placeholder="e.g. 70.0" required>
+                        <span class="field-error" th:if="${#fields.hasErrors('targetWeightKg')}" th:errors="*{targetWeightKg}"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Estimated BMI</label>
+                        <div class="bmi-preview-box" id="bmiPreviewBox">
+                            <span class="bmi-preview-value" id="bmiPreviewValue">--</span>
+                            <span class="bmi-preview-hint" id="bmiPreviewHint">Enter height &amp; weight</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 4: Fitness Information -->
+            <div class="wizard-step hidden" data-step="4" data-title="Fitness Goals &amp; Level">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="fitnessGoal">Primary Fitness Goal</label>
+                        <select id="fitnessGoal" th:field="*{fitnessGoal}" required>
+                            <option th:each="goal : ${fitnessGoals}" th:value="${goal}" th:text="${goal}"></option>
+                        </select>
+                        <span class="field-error" th:if="${#fields.hasErrors('fitnessGoal')}" th:errors="*{fitnessGoal}"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="experienceLevel">Experience Level</label>
+                        <select id="experienceLevel" th:field="*{experienceLevel}" required>
+                            <option th:each="lvl : ${experienceLevels}" th:value="${lvl}" th:text="${lvl}"></option>
+                        </select>
+                        <span class="field-error" th:if="${#fields.hasErrors('experienceLevel')}" th:errors="*{experienceLevel}"></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 5: Workout & Diet Preferences -->
+            <div class="wizard-step hidden" data-step="5" data-title="Training &amp; Diet Preferences">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="workoutLocation">Workout Location</label>
+                        <select id="workoutLocation" th:field="*{workoutLocation}" required>
+                            <option th:each="loc : ${workoutLocations}" th:value="${loc}" th:text="${loc}"></option>
+                        </select>
+                        <span class="field-error" th:if="${#fields.hasErrors('workoutLocation')}" th:errors="*{workoutLocation}"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="preferredWorkoutDurationMin">Preferred Duration (min)</label>
+                        <select id="preferredWorkoutDurationMin" th:field="*{preferredWorkoutDurationMin}" required>
+                            <option th:each="dur : ${workoutDurations}" th:value="${dur}" th:text="${dur + ' minutes'}"></option>
+                        </select>
+                        <span class="field-error" th:if="${#fields.hasErrors('preferredWorkoutDurationMin')}" th:errors="*{preferredWorkoutDurationMin}"></span>
+                    </div>
+
+                    <div class="form-group form-span-2">
+                        <label for="dietPreference">Diet Preference</label>
+                        <select id="dietPreference" th:field="*{dietPreference}" required>
+                            <option th:each="diet : ${dietPreferences}" th:value="${diet}" th:text="${diet}"></option>
+                        </select>
+                        <span class="field-error" th:if="${#fields.hasErrors('dietPreference')}" th:errors="*{dietPreference}"></span>
+                    </div>
+
+                    <div class="form-group form-span-2">
+                        <label>Available Equipment</label>
+                        <div class="checkbox-grid">
+                            <label class="checkbox-pill" th:each="equip : ${equipmentOptions}">
+                                <input type="checkbox" th:field="*{availableEquipment}" th:value="${equip}">
+                                <span th:text="${equip}"></span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 6: Safety Information -->
+            <div class="wizard-step hidden" data-step="6" data-title="Safety &amp; Health Notes">
+                <div class="stack-form">
+                    <div class="form-group">
+                        <label for="foodAllergies">Food Allergies (Optional)</label>
+                        <textarea id="foodAllergies" rows="2" th:field="*{foodAllergies}"
+                                  placeholder="e.g. Peanuts, Shellfish, Lactose (leave blank if none)"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="dietaryRestrictions">Dietary Restrictions (Optional)</label>
+                        <textarea id="dietaryRestrictions" rows="2" th:field="*{dietaryRestrictions}"
+                                  placeholder="e.g. Low sodium, Gluten-free (leave blank if none)"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="injuriesLimitations">Injuries or Physical Limitations (Optional)</label>
+                        <textarea id="injuriesLimitations" rows="2" th:field="*{injuriesLimitations}"
+                                  placeholder="e.g. Left knee sensitivity, lower back strain (leave blank if none)"></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <div class="wizard-actions">
+                <button type="button" class="btn btn-secondary" id="prevStepBtn">Previous</button>
+                <div class="wizard-actions-right">
+                    <button type="button" class="btn btn-primary" id="nextStepBtn">Continue</button>
+                    <button type="submit" class="btn btn-primary hidden" id="submitRegisterBtn">Complete Registration</button>
+                </div>
+            </div>
+        </form>
+    </section>
+</main>
+
+</body>
+</html>

@@ -55,6 +55,9 @@ class ProfileServiceTest {
         profile.setAvailableEquipment("Resistance Bands");
         profile.setPreferredWorkoutDurationMin(30);
         profile.setDietPreference("Vegetarian");
+        profile.setFoodAllergies("None");
+        profile.setDietaryRestrictions("None");
+        profile.setInjuriesLimitations("None");
 
         when(userRepository.findByUsername("fituser1")).thenReturn(Optional.of(user));
         when(fitnessProfileRepository.findByUserId(5L)).thenReturn(Optional.of(profile));

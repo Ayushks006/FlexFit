@@ -24,17 +24,26 @@ public class JwtTokenProvider {
     private final long expirationMs;
 
     public JwtTokenProvider(
-            @Value("${flexfit.jwt.secret:flexfit_secure_jwt_secret_key_at_least_32_bytes_long}") String secret,
+            @Value("${flexfit.jwt.secret:}") String secret,
             @Value("${flexfit.jwt.expiration-ms:86400000}") long expirationMs) {
         this.key = deriveKey(secret);
         this.expirationMs = expirationMs;
     }
 
     private SecretKey deriveKey(String secret) {
+        if (secret == null || secret.isBlank()) {
+            throw new IllegalStateException(
+                    "JWT_SECRET environment variable (flexfit.jwt.secret) is required and must not be blank.");
+        }
+        byte[] secretBytes = secret.getBytes(StandardCharsets.UTF_8);
+        if (secretBytes.length < 32) {
+            throw new IllegalStateException(
+                    "JWT_SECRET must be at least 32 bytes (256 bits) long for HMAC-SHA256 signing.");
+        }
         try {
-            // Ensure 256-bit cryptographic strength regardless of input length
+            // Ensure 256-bit cryptographic strength
             MessageDigest sha256 = MessageDigest.getInstance("SHA-256");
-            byte[] hash = sha256.digest(secret.getBytes(StandardCharsets.UTF_8));
+            byte[] hash = sha256.digest(secretBytes);
             return Keys.hmacShaKeyFor(hash);
         } catch (NoSuchAlgorithmException e) {
             throw new RuntimeException("SHA-256 algorithm not available for JWT key generation", e);

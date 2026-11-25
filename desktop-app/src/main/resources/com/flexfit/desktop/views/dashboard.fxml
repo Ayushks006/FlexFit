@@ -97,7 +97,7 @@
                                             <VBox spacing="6.0" styleClass="dashboard-card" GridPane.columnIndex="0" GridPane.rowIndex="0">
                                                 <children>
                                                     <Text styleClass="stat-label" text="CURRENT WEIGHT" />
-                                                    <Label fx:id="currentWeightMetricLabel" styleClass="stat-value" text="72.0 kg" />
+                                                    <Label fx:id="currentWeightMetricLabel" styleClass="stat-value" text="-- kg" />
                                                 </children>
                                             </VBox>
 
@@ -105,7 +105,7 @@
                                             <VBox spacing="6.0" styleClass="dashboard-card" GridPane.columnIndex="1" GridPane.rowIndex="0">
                                                 <children>
                                                     <Text styleClass="stat-label" text="TARGET GOAL" />
-                                                    <Label fx:id="targetWeightMetricLabel" styleClass="stat-value" text="68.0 kg" />
+                                                    <Label fx:id="targetWeightMetricLabel" styleClass="stat-value" text="-- kg" />
                                                 </children>
                                             </VBox>
 
@@ -113,7 +113,7 @@
                                             <VBox spacing="6.0" styleClass="dashboard-card" GridPane.columnIndex="2" GridPane.rowIndex="0">
                                                 <children>
                                                     <Text styleClass="stat-label" text="STATURE" />
-                                                    <Label fx:id="heightMetricLabel" styleClass="stat-value" text="175 cm" />
+                                                    <Label fx:id="heightMetricLabel" styleClass="stat-value" text="-- cm" />
                                                 </children>
                                             </VBox>
 
@@ -121,7 +121,7 @@
                                             <VBox spacing="6.0" styleClass="dashboard-card" GridPane.columnIndex="3" GridPane.rowIndex="0">
                                                 <children>
                                                     <Text styleClass="stat-label" text="BODY MASS INDEX" />
-                                                    <Label fx:id="bmiMetricLabel" styleClass="stat-value" text="23.5" />
+                                                    <Label fx:id="bmiMetricLabel" styleClass="stat-value" text="--" />
                                                 </children>
                                             </VBox>
 
@@ -129,8 +129,8 @@
                                             <VBox spacing="6.0" styleClass="dashboard-card" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="1">
                                                 <children>
                                                     <Text styleClass="stat-label" text="TRAINING OBJECTIVE" />
-                                                    <Label fx:id="goalMetricLabel" style="-fx-text-fill: #FFFFFF; -fx-font-size: 20px; -fx-font-weight: 800;" text="Weight loss" />
-                                                    <Label fx:id="experienceMetricLabel" style="-fx-text-fill: #8E9BAE; -fx-font-size: 12px;" text="Intermediate Level Athlete" />
+                                                    <Label fx:id="goalMetricLabel" style="-fx-text-fill: #FFFFFF; -fx-font-size: 20px; -fx-font-weight: 800;" text="--" />
+                                                    <Label fx:id="experienceMetricLabel" style="-fx-text-fill: #8E9BAE; -fx-font-size: 12px;" text="--" />
                                                 </children>
                                             </VBox>
 
@@ -140,10 +140,10 @@
                                                     <Text styleClass="stat-label" text="PROFILE COMPLETION" />
                                                     <HBox alignment="CENTER_LEFT" spacing="12.0">
                                                         <children>
-                                                            <Label fx:id="completionPercentLabel" styleClass="stat-value" text="100%" />
+                                                            <Label fx:id="completionPercentLabel" styleClass="stat-value" text="--%" />
                                                             <VBox spacing="2.0">
                                                                 <children>
-                                                                    <Label style="-fx-text-fill: #00E676; -fx-font-size: 12px; -fx-font-weight: 700;" text="All 6 Biometric Stages Complete" />
+                                                                    <Label fx:id="completionSubtitleLabel" style="-fx-text-fill: #00E676; -fx-font-size: 12px; -fx-font-weight: 700;" text="Profile Synchronizing" />
                                                                     <Label style="-fx-text-fill: #8E9BAE; -fx-font-size: 11px;" text="Ready for Phase 3 ML Model Integration" />
                                                                 </children>
                                                             </VBox>

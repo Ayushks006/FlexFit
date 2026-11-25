@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Fitness Profile')}"></head>
+<body>
+<div th:replace="~{fragments/layout :: appShell(~{::#pageContent})}">
+    <div id="pageContent" class="page-stack">
+
+        <div th:if="${successMessage}" class="alert alert-success" role="status" th:text="${successMessage}">
+            Profile updated.
+        </div>
+
+        <section class="card profile-header-card">
+            <div class="profile-identity">
+                <div class="user-avatar user-avatar-lg"
+                     th:text="${currentUser != null ? #strings.substring(currentUser.fullName, 0, 1).toUpperCase() : 'A'}">A</div>
+                <div>
+                    <h2 th:text="${currentUser != null ? currentUser.fullName : 'Athlete'}">Athlete</h2>
+                    <p class="text-muted" th:if="${currentUser != null}"
+                       th:text="'@' + ${currentUser.username} + ' • ' + ${currentUser.email}">@athlete</p>
+                </div>
+            </div>
+            <a th:href="@{/profile/edit}" class="btn btn-primary">Edit Profile</a>
+        </section>
+
+        <div th:if="${profile != null}" class="two-col-grid">
+            <article class="card detail-card">
+                <h3>Personal Details</h3>
+                <dl class="detail-list">
+                    <div class="detail-row">
+                        <dt>Age</dt>
+                        <dd th:text="${profile.age != null ? profile.age + ' years' : '--'}">--</dd>
+                    </div>
+                    <div class="detail-row">
+                        <dt>Gender</dt>
+                        <dd th:text="${profile.gender != null ? profile.gender : '--'}">--</dd>
+                    </div>
+                    <div class="detail-row">
+                        <dt>Location</dt>
+                        <dd th:text="${(profile.district != null ? profile.district : '--') + ', ' + (profile.state != null ? profile.state : '--')}">--</dd>
+                    </div>
+                    <div class="detail-row">
+                        <dt>Profile Completion</dt>
+                        <dd th:text="${profile.profileCompletionPercentage + '%'}">0%</dd>
+                    </div>
+                </dl>
+            </article>
+
+            <article class="card detail-card">
+                <h3>Body &amp; Biometrics</h3>
+                <dl class="detail-list">
+                    <div class="detail-row">
+                        <dt>Height</dt>
+                        <dd th:text="${profile.heightCm != null ? profile.heightCm + ' cm' : '--'}">--</dd>
+                    </div>
+                    <div class="detail-row">
+                        <dt>Current Weight</dt>
+                        <dd th:text="${profile.currentWeightKg != null ? profile.currentWeightKg + ' kg' : '--'}">--</dd>
+                    </div>
+                    <div class="detail-row">
+                        <dt>Target Weight</dt>
+                        <dd th:text="${profile.targetWeightKg != null ? profile.targetWeightKg + ' kg' : '--'}">--</dd>
+                    </div>
+                    <div class="detail-row">
+                        <dt>BMI</dt>
+                        <dd class="accent-primary" th:text="${profile.bmi != null ? profile.bmi : '--'}">--</dd>
+                    </div>
+                </dl>
+            </article>
+
+            <article class="card detail-card">
+                <h3>Training &amp; Diet Preferences</h3>
+                <dl class="detail-list">
+                    <div class="detail-row">
+                        <dt>Fitness Goal</dt>
+                        <dd th:text="${profile.fitnessGoal != null ? profile.fitnessGoal : '--'}">--</dd>
+                    </div>
+                    <div class="detail-row">
+                        <dt>Experience Level</dt>
+                        <dd th:text="${profile.experienceLevel != null ? profile.experienceLevel : '--'}">--</dd>
+                    </div>
+                    <div class="detail-row">
+                        <dt>Workout Location</dt>
+                        <dd th:text="${profile.workoutLocation != null ? profile.workoutLocation : '--'}">--</dd>
+                    </div>
+                    <div class="detail-row">
+                        <dt>Session Duration</dt>
+                        <dd th:text="${profile.preferredWorkoutDurationMin != null ? profile.preferredWorkoutDurationMin + ' min' : '--'}">--</dd>
+                    </div>
+                    <div class="detail-row">
+                        <dt>Diet Preference</dt>
+                        <dd th:text="${profile.dietPreference != null ? profile.dietPreference : '--'}">--</dd>
+                    </div>
+                    <div class="detail-row">
+                        <dt>Available Equipment</dt>
+                        <dd th:text="${profile.availableEquipment != null && !profile.availableEquipment.isEmpty() ? #strings.listJoin(profile.availableEquipment, ', ') : 'None'}">None</dd>
+                    </div>
+                </dl>
+            </article>
+
+            <article class="card detail-card">
+                <h3>Safety &amp; Health Notes</h3>
+                <dl class="detail-list">
+                    <div class="detail-row">
+                        <dt>Food Allergies</dt>
+                        <dd th:text="${profile.foodAllergies != null && !profile.foodAllergies.isBlank() ? profile.foodAllergies : 'None reported'}">None reported</dd>
+                    </div>
+                    <div class="detail-row">
+                        <dt>Dietary Restrictions</dt>
+                        <dd th:text="${profile.dietaryRestrictions != null && !profile.dietaryRestrictions.isBlank() ? profile.dietaryRestrictions : 'None reported'}">None reported</dd>
+                    </div>
+                    <div class="detail-row">
+                        <dt>Injuries / Limitations</dt>
+                        <dd th:text="${profile.injuriesLimitations != null && !profile.injuriesLimitations.isBlank() ? profile.injuriesLimitations : 'None reported'}">None reported</dd>
+                    </div>
+                </dl>
+            </article>
+        </div>
+
+        <section th:if="${profile == null}" class="card empty-state-card">
+            <h3>No Fitness Profile Found</h3>
+            <p class="text-muted">Create your fitness profile to start tracking your biometric metrics.</p>
+            <a th:href="@{/profile/edit}" class="btn btn-primary">Create Profile</a>
+        </section>
+
+    </div>
+</div>
+</body>
+</html>

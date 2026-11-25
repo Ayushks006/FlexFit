@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{fragments/layout :: head('Transform Your Fitness')}"></head>
+<body class="public-body">
+
+<!-- Modern Navigation Bar -->
+<header class="public-header">
+    <div class="container public-nav">
+        <a th:href="@{/}" class="brand-logo">
+            <span class="brand-mark" aria-hidden="true">FF</span>
+            <span class="brand-text">Flex<span>Fit</span></span>
+        </a>
+
+        <nav class="public-nav-links" aria-label="Landing Navigation">
+            <a href="#features">Features</a>
+            <a href="#how-it-works">How It Works</a>
+            <a href="#showcase">Modules</a>
+        </nav>
+
+        <div class="public-nav-actions">
+            <a th:href="@{/login}" class="btn btn-ghost" sec:authorize="!isAuthenticated()">Sign In</a>
+            <a th:href="@{/register}" class="btn btn-primary" sec:authorize="!isAuthenticated()">Get Started</a>
+            <a th:href="@{/dashboard}" class="btn btn-primary" sec:authorize="isAuthenticated()">Open Dashboard</a>
+        </div>
+    </div>
+</header>
+
+<main>
+    <!-- Hero Composition -->
+    <section class="hero-section container">
+        <div class="hero-content">
+            <span class="hero-eyebrow">Modern Gym &amp; Fitness Intelligence</span>
+            <h1 class="hero-title">Transform Your <span>Fitness.</span> Elevate Your <span>Life.</span></h1>
+            <p class="hero-subtitle">
+                Your personal fitness intelligence platform for smarter workouts, better nutrition and measurable progress.
+            </p>
+            <div class="hero-cta">
+                <a th:href="@{/register}" class="btn btn-primary btn-lg" sec:authorize="!isAuthenticated()">Get Started</a>
+                <a th:href="@{/dashboard}" class="btn btn-primary btn-lg" sec:authorize="isAuthenticated()">Go to Dashboard</a>
+                <a href="#features" class="btn btn-secondary btn-lg">Explore Features</a>
+            </div>
+            <div class="hero-stats-strip">
+                <div class="hero-stat-item">
+                    <strong>16-Point</strong>
+                    <span>Biometric Profile</span>
+                </div>
+                <div class="hero-stat-item">
+                    <strong>Adaptive</strong>
+                    <span>Workout Intelligence</span>
+                </div>
+                <div class="hero-stat-item">
+                    <strong>Real-Time</strong>
+                    <span>Progress Analytics</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="hero-media-card">
+            <img th:src="@{/images/hero-athlete.jpg}"
+                 alt="Athlete training with dumbbells in a modern dark gym with warm orange lighting"
+                 class="hero-photo">
+            <div class="hero-photo-caption">
+                <div>
+                    <strong>Precision Training &amp; Analytics</strong>
+                    <span>Tailored to your equipment, goals &amp; recovery</span>
+                </div>
+                <a th:href="@{/register}" class="btn btn-primary btn-sm" sec:authorize="!isAuthenticated()">Join Now</a>
+                <a th:href="@{/workouts}" class="btn btn-primary btn-sm" sec:authorize="isAuthenticated()">Workouts</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Core Platform Pillars -->
+    <section id="features" class="landing-section container">
+        <div class="section-header-center">
+            <span class="eyebrow-badge">Core Capabilities</span>
+            <h2>Built for serious training and measurable results.</h2>
+            <p>Every tool in FlexFit connects directly to your biometric profile, equipment setup, and personal goals.</p>
+        </div>
+
+        <div class="feature-grid">
+            <article class="card feature-card">
+                <div class="feature-icon">01</div>
+                <h3>Workout Intelligence</h3>
+                <p>Profile-aware training plans matched to your experience level, gym or home gear, duration, and injury notes.</p>
+            </article>
+            <article class="card feature-card">
+                <div class="feature-icon">02</div>
+                <h3>Smart Nutrition</h3>
+                <p>Dietary preferences, allergy boundaries, and structured fueling aligned with your weight and performance targets.</p>
+            </article>
+            <article class="card feature-card">
+                <div class="feature-icon">03</div>
+                <h3>Fitness Challenges</h3>
+                <p>Structured consistency streaks and milestone targets designed to turn daily effort into lasting habits.</p>
+            </article>
+            <article class="card feature-card">
+                <div class="feature-icon">04</div>
+                <h3>Progress Tracking</h3>
+                <p>Log completed workouts, monitor weekly duration and approximate burn, and track BMI and weight deltas.</p>
+            </article>
+        </div>
+    </section>
+
+    <!-- How It Works -->
+    <section id="how-it-works" class="landing-section steps-section">
+        <div class="container">
+            <div class="section-header-center">
+                <span class="eyebrow-badge">How It Works</span>
+                <h2>Three steps from baseline to peak consistency.</h2>
+                <p>Set up your profile once and let your dashboard and workout workspace guide every session.</p>
+            </div>
+
+            <div class="steps-grid">
+                <article class="step-card">
+                    <div class="step-num">Step 01</div>
+                    <h3>Complete Your Biometric Profile</h3>
+                    <p>Capture height, weight, target weight, goal, experience, equipment, and safety limitations in our 6-stage onboarding.</p>
+                </article>
+                <article class="step-card">
+                    <div class="step-num">Step 02</div>
+                    <h3>Follow Tailored Sessions</h3>
+                    <p>Get deterministic, injury-aware workout recommendations with clear sets, reps, rest intervals, and calorie estimates.</p>
+                </article>
+                <article class="step-card">
+                    <div class="step-num">Step 03</div>
+                    <h3>Track Weekly Momentum</h3>
+                    <p>Log every workout and review real-time weekly duration, session frequency, and 7-day activity charts.</p>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <!-- Workout & Nutrition Showcase -->
+    <section id="showcase" class="landing-section container">
+        <div class="section-header-center">
+            <span class="eyebrow-badge">Platform Modules</span>
+            <h2>Training and nutrition, engineered together.</h2>
+            <p>Move seamlessly between dark-mode focus and a calm, light analytics workspace once signed in.</p>
+        </div>
+
+        <div class="showcase-grid">
+            <article class="card showcase-card">
+                <span class="eyebrow-badge">Workout Intelligence</span>
+                <h3>Equipment-Matched Programming</h3>
+                <p class="text-muted">Whether you train in a commercial gym or at home with bodyweight, FlexFit builds safe, structured sessions.</p>
+                <ul class="showcase-list">
+                    <li>Injury-aware exercise substitutions and safety notes</li>
+                    <li>One-click logging from recommended workout cards</li>
+                    <li>Complete session history and 7-day volume charts</li>
+                </ul>
+            </article>
+
+            <article class="card showcase-card">
+                <span class="eyebrow-badge">Smart Nutrition &amp; Tracking</span>
+                <h3>Biometric &amp; Dietary Alignment</h3>
+                <p class="text-muted">Keep your vegetarian or non-vegetarian preferences, allergies, and weight targets synchronized across web and desktop.</p>
+                <ul class="showcase-list">
+                    <li>Real-time BMI and target weight delta calculations</li>
+                    <li>Allergy and dietary restriction safeguards</li>
+                    <li>Unified MySQL persistence across Web &amp; JavaFX</li>
+                </ul>
+            </article>
+        </div>
+    </section>
+
+    <!-- Final CTA -->
+    <section class="landing-section container">
+        <div class="cta-banner">
+            <div>
+                <h2>Ready to elevate your training?</h2>
+                <p>Create your FlexFit account today and turn every workout into measurable progress.</p>
+            </div>
+            <div>
+                <a th:href="@{/register}" class="btn btn-light btn-lg" sec:authorize="!isAuthenticated()">Get Started Free</a>
+                <a th:href="@{/dashboard}" class="btn btn-light btn-lg" sec:authorize="isAuthenticated()">Open Dashboard</a>
+            </div>
+        </div>
+    </section>
+</main>
+
+<!-- Footer -->
+<footer class="public-footer">
+    <div class="container footer-inner">
+        <span>FlexFit &mdash; Modern Gym &amp; Fitness Intelligence</span>
+        <div class="footer-links">
+            <a href="#features">Features</a>
+            <a href="#how-it-works">How It Works</a>
+            <a th:href="@{/login}">Sign In</a>
+            <a th:href="@{/register}">Get Started</a>
+        </div>
+    </div>
+</footer>
+
+</body>
+</html>

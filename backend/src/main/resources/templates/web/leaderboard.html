@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Leaderboard')}"></head>
+<body>
+<div th:replace="~{fragments/layout :: appShell(~{::#pageContent})}">
+    <div id="pageContent" class="page-stack">
+
+        <!-- Current User Rank Banner + Filters -->
+        <section class="card hero-banner">
+            <div>
+                <span class="eyebrow-badge" th:text="${'Ranking Scope: ' + leaderboard.filterLabel}">Ranking Scope: Global</span>
+                <h2 th:if="${leaderboard.currentUserEntry != null}"
+                    th:text="${'Your Rank: #' + leaderboard.currentUserEntry.rank + ' • ' + leaderboard.currentUserEntry.totalPoints + ' pts'}">
+                    Your Rank: #1
+                </h2>
+                <h2 th:if="${leaderboard.currentUserEntry == null}">Community Rankings</h2>
+                <p class="text-muted text-sm">
+                    Rankings are calculated from completed challenges, workouts logged, and verified points.
+                </p>
+            </div>
+
+            <div class="filter-tabs" role="navigation" aria-label="Leaderboard Scope Filters">
+                <a th:href="@{/leaderboard(scope='global')}" class="btn btn-sm"
+                   th:classappend="${leaderboard.scope == 'global'} ? ' btn-primary' : ' btn-secondary'">Global</a>
+                <a th:href="@{/leaderboard(scope='state')}" class="btn btn-sm"
+                   th:classappend="${leaderboard.scope == 'state'} ? ' btn-primary' : ' btn-secondary'">State</a>
+                <a th:href="@{/leaderboard(scope='district')}" class="btn btn-sm"
+                   th:classappend="${leaderboard.scope == 'district'} ? ' btn-primary' : ' btn-secondary'">District</a>
+            </div>
+        </section>
+
+        <!-- Ranked User Table -->
+        <section class="card">
+            <div class="panel-header">
+                <div>
+                    <h3>Athletes Leaderboard</h3>
+                    <p class="text-muted text-sm" th:text="${'Showing ' + #lists.size(leaderboard.entries) + ' registered athlete(s)'}">Showing athletes</p>
+                </div>
+                <a th:href="@{/challenges}" class="btn btn-primary btn-sm">Earn Points in Challenges</a>
+            </div>
+
+            <div th:if="${#lists.isEmpty(leaderboard.entries)}" class="empty-panel-body">
+                <h4>No ranked athletes for this filter</h4>
+                <p class="text-muted text-sm">
+                    Make sure your state and district are set in your fitness profile, or switch to the Global leaderboard.
+                </p>
+                <div style="margin-top:14px;">
+                    <a th:href="@{/leaderboard(scope='global')}" class="btn btn-secondary btn-sm">View Global Rankings</a>
+                </div>
+            </div>
+
+            <div th:if="${!#lists.isEmpty(leaderboard.entries)}" class="table-responsive">
+                <table class="leaderboard-table">
+                    <thead>
+                    <tr>
+                        <th>Rank</th>
+                        <th>Athlete</th>
+                        <th>Location</th>
+                        <th>Challenges</th>
+                        <th>Workouts</th>
+                        <th>Total Points</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="row : ${leaderboard.entries}" th:classappend="${row.currentUser} ? ' is-current-user'">
+                        <td>
+                            <span class="rank-badge" th:text="${'#' + row.rank}">#1</span>
+                        </td>
+                        <td>
+                            <div class="lb-user-cell">
+                                <strong th:text="${row.displayName}">Athlete</strong>
+                                <span class="text-muted text-sm" th:text="${'@' + row.username}">@athlete</span>
+                                <span th:if="${row.currentUser}" class="status-pill">You</span>
+                            </div>
+                        </td>
+                        <td class="text-muted text-sm"
+                            th:text="${row.district != null && row.state != null ? row.district + ', ' + row.state : '--'}">--</td>
+                        <td th:text="${row.completedChallenges}">0</td>
+                        <td th:text="${row.completedWorkouts}">0</td>
+                        <td>
+                            <strong class="accent-primary" th:text="${row.totalPoints + ' pts'}">0 pts</strong>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+    </div>
+</div>
+</body>
+</html>

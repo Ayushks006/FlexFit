@@ -46,6 +46,9 @@ public class DashboardController {
     private Label completionPercentLabel;
 
     @FXML
+    private Label completionSubtitleLabel;
+
+    @FXML
     private StackPane contentArea;
 
     @FXML
@@ -105,7 +108,17 @@ public class DashboardController {
             heightMetricLabel.setText(p.getHeightCm() != null ? p.getHeightCm() + " cm" : "--");
             experienceMetricLabel.setText(p.getExperienceLevel() != null ? p.getExperienceLevel() : "--");
             bmiMetricLabel.setText(p.getBmi() != null ? p.getBmi().toString() : "--");
-            completionPercentLabel.setText(p.getProfileCompletionPercentage() + "%");
+            int completion = p.getProfileCompletionPercentage();
+            completionPercentLabel.setText(completion + "%");
+            if (completionSubtitleLabel != null) {
+                if (completion >= 100) {
+                    completionSubtitleLabel.setText("Your fitness profile is complete!");
+                    completionSubtitleLabel.setStyle("-fx-text-fill: #00E676; -fx-font-size: 12px; -fx-font-weight: 700;");
+                } else {
+                    completionSubtitleLabel.setText(completion + "% Profile Completed");
+                    completionSubtitleLabel.setStyle("-fx-text-fill: #00E5FF; -fx-font-size: 12px; -fx-font-weight: 700;");
+                }
+            }
         }
     }
 

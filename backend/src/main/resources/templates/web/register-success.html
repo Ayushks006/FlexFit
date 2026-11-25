@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Registration Complete')}"></head>
+<body class="public-body auth-body">
+
+<main class="auth-container">
+    <div class="auth-brand-top">
+        <a th:href="@{/dashboard}" class="brand-logo">
+            <span class="brand-mark" aria-hidden="true">FF</span>
+            <span class="brand-text">Flex<span>Fit</span></span>
+        </a>
+    </div>
+
+    <section class="card auth-card success-card">
+        <div class="success-icon-ring" aria-hidden="true">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <polyline points="20 6 9 17 4 12"></polyline>
+            </svg>
+        </div>
+
+        <h1>Profile Ready, <span th:text="${registeredUser != null ? registeredUser.fullName : 'Athlete'}">Athlete</span>!</h1>
+        <p class="text-muted">Your FlexFit account and biometric profile have been created and authenticated.</p>
+
+        <div class="summary-grid" th:if="${registeredProfile != null}">
+            <div class="summary-item">
+                <span class="stat-label">Username</span>
+                <span class="stat-value" th:text="'@' + ${registeredUser.username}">@athlete</span>
+            </div>
+            <div class="summary-item">
+                <span class="stat-label">Calculated BMI</span>
+                <span class="stat-value" th:text="${registeredProfile.bmi != null ? registeredProfile.bmi : '--'}">--</span>
+            </div>
+            <div class="summary-item">
+                <span class="stat-label">Fitness Goal</span>
+                <span class="stat-value" th:text="${registeredProfile.fitnessGoal}">--</span>
+            </div>
+            <div class="summary-item">
+                <span class="stat-label">Profile Completion</span>
+                <span class="stat-value" th:text="${registeredProfile.profileCompletionPercentage + '%'}">0%</span>
+            </div>
+        </div>
+
+        <div class="stack-actions">
+            <a th:href="@{/dashboard}" class="btn btn-primary btn-block btn-lg">Open Dashboard</a>
+            <a th:href="@{/profile}" class="btn btn-secondary btn-block">Review Full Profile</a>
+        </div>
+    </section>
+</main>
+
+</body>
+</html>

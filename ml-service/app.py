@@ -3,6 +3,7 @@ FlexFit Machine Learning Service (FastAPI)
 Phase 1: Foundation & Health Diagnostic Service
 """
 
+import os
 import sys
 import platform
 from datetime import datetime, timezone
@@ -17,13 +18,20 @@ app = FastAPI(
     version="1.0.0-SNAPSHOT"
 )
 
-# Enable CORS for desktop-app and backend integration
+# Configure CORS origins via environment variable (no wildcard with credentials)
+_raw_origins = os.getenv("ML_CORS_ALLOWED_ORIGINS", "http://localhost:8080,http://127.0.0.1:8080")
+ALLOWED_ORIGINS = [
+    origin.strip()
+    for origin in _raw_origins.split(",")
+    if origin.strip() and origin.strip() != "*"
+]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
+    allow_origins=ALLOWED_ORIGINS,
+    allow_credentials=False,
+    allow_methods=["GET", "POST", "OPTIONS"],
+    allow_headers=["Authorization", "Content-Type"],
 )
 
 

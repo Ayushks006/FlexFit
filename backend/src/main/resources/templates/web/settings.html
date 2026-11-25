@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Settings')}"></head>
+<body>
+<div th:replace="~{fragments/layout :: appShell(~{::#pageContent})}">
+    <div id="pageContent" class="page-stack">
+
+        <div class="two-col-grid">
+            <article class="card detail-card">
+                <h3>Account Information</h3>
+                <dl class="detail-list" th:if="${currentUser != null}">
+                    <div class="detail-row">
+                        <dt>Full Name</dt>
+                        <dd th:text="${currentUser.fullName}">Athlete</dd>
+                    </div>
+                    <div class="detail-row">
+                        <dt>Username</dt>
+                        <dd th:text="'@' + ${currentUser.username}">@athlete</dd>
+                    </div>
+                    <div class="detail-row">
+                        <dt>Email</dt>
+                        <dd th:text="${currentUser.email}">athlete@example.com</dd>
+                    </div>
+                    <div class="detail-row">
+                        <dt>Role</dt>
+                        <dd th:text="${currentUser.role}">ROLE_USER</dd>
+                    </div>
+                </dl>
+            </article>
+
+            <article class="card detail-card">
+                <h3>Session &amp; Security</h3>
+                <p class="text-muted text-sm">
+                    Your web session is authenticated via an HttpOnly JWT cookie with CSRF form protection enabled.
+                    Authentication tokens are never stored in browser localStorage.
+                </p>
+                <div class="settings-actions">
+                    <a th:href="@{/profile/edit}" class="btn btn-secondary">Edit Fitness Profile</a>
+                    <form th:action="@{/logout}" method="post">
+                        <button type="submit" class="btn btn-danger">Sign Out of FlexFit</button>
+                    </form>
+                </div>
+            </article>
+        </div>
+
+    </div>
+</div>
+</body>
+</html>

@@ -55,9 +55,12 @@ flexfit:
   api:
     version: "v1"
   jwt:
-    # Read from environment variable; default only for local dev fallback
-    secret: ${JWT_SECRET:flexfit_production_grade_secret_key_at_least_32_bytes_long_for_hmac_sha256}
+    # Must be provided via JWT_SECRET environment variable (minimum 32 bytes)
+    secret: ${JWT_SECRET:}
     expiration-ms: ${JWT_EXPIRATION_MS:86400000}
+  cookie:
+    name: FLEXFIT_TOKEN
+    secure: ${COOKIE_SECURE:false}
   ml-service:
     url: ${ML_SERVICE_URL:http://localhost:8000}
   cors:

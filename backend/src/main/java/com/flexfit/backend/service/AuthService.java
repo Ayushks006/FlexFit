@@ -173,7 +173,13 @@ public class AuthService {
         dto.setFoodAllergies(profile.getFoodAllergies());
         dto.setDietaryRestrictions(profile.getDietaryRestrictions());
         dto.setInjuriesLimitations(profile.getInjuriesLimitations());
-        dto.setProfileCompletionPercentage(100);
+        dto.setProfileCompletionPercentage(FitnessProfileDto.calculateCompletionPercentage(
+                profile.getAge(), profile.getGender(), profile.getDistrict(), profile.getState(),
+                profile.getHeightCm(), profile.getCurrentWeightKg(), profile.getTargetWeightKg(),
+                profile.getFitnessGoal(), profile.getExperienceLevel(), profile.getWorkoutLocation(),
+                dto.getAvailableEquipment(), profile.getPreferredWorkoutDurationMin(), profile.getDietPreference(),
+                profile.getFoodAllergies(), profile.getDietaryRestrictions(), profile.getInjuriesLimitations()
+        ));
         dto.setCreatedAt(profile.getCreatedAt());
         dto.setUpdatedAt(profile.getUpdatedAt());
 

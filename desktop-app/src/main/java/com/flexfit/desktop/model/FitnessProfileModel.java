@@ -33,7 +33,7 @@ public class FitnessProfileModel {
     private String dietaryRestrictions;
     private String injuriesLimitations;
 
-    private Integer profileCompletionPercentage = 100;
+    private Integer profileCompletionPercentage;
 
     public FitnessProfileModel() {
     }
@@ -203,7 +203,32 @@ public class FitnessProfileModel {
     }
 
     public Integer getProfileCompletionPercentage() {
-        return profileCompletionPercentage != null ? profileCompletionPercentage : 100;
+        if (profileCompletionPercentage != null) {
+            return profileCompletionPercentage;
+        }
+        return calculateCompletionPercentage();
+    }
+
+    public int calculateCompletionPercentage() {
+        int total = 16;
+        int completed = 0;
+        if (age != null && age > 0) completed++;
+        if (gender != null && !gender.isBlank()) completed++;
+        if (district != null && !district.isBlank()) completed++;
+        if (state != null && !state.isBlank()) completed++;
+        if (heightCm != null && heightCm.compareTo(BigDecimal.ZERO) > 0) completed++;
+        if (currentWeightKg != null && currentWeightKg.compareTo(BigDecimal.ZERO) > 0) completed++;
+        if (targetWeightKg != null && targetWeightKg.compareTo(BigDecimal.ZERO) > 0) completed++;
+        if (fitnessGoal != null && !fitnessGoal.isBlank()) completed++;
+        if (experienceLevel != null && !experienceLevel.isBlank()) completed++;
+        if (workoutLocation != null && !workoutLocation.isBlank()) completed++;
+        if (availableEquipment != null && !availableEquipment.isEmpty()) completed++;
+        if (preferredWorkoutDurationMin != null && preferredWorkoutDurationMin > 0) completed++;
+        if (dietPreference != null && !dietPreference.isBlank()) completed++;
+        if (foodAllergies != null && !foodAllergies.isBlank()) completed++;
+        if (dietaryRestrictions != null && !dietaryRestrictions.isBlank()) completed++;
+        if (injuriesLimitations != null && !injuriesLimitations.isBlank()) completed++;
+        return (int) Math.round((completed * 100.0) / total);
     }
 
     public void setProfileCompletionPercentage(Integer profileCompletionPercentage) {
