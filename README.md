@@ -141,11 +141,13 @@ Double-click `start_all.bat` in the project root. It checks `http://localhost:80
 
 ## Screenshots
 
-- *Landing Page*: `<!-- Add screenshot of http://localhost:8080/ -->`
-- *Analytics Dashboard*: `<!-- Add screenshot of http://localhost:8080/dashboard -->`
-- *Workout Intelligence*: `<!-- Add screenshot of http://localhost:8080/workouts -->`
-- *Nutrition Intelligence*: `<!-- Add screenshot of http://localhost:8080/nutrition -->`
-- *Challenges & Leaderboard*: `<!-- Add screenshot of http://localhost:8080/challenges -->`
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/09a50add-6de5-4526-aa2b-24d7170763de" />
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/d4183de2-5473-40c5-b5cb-b75cf06bc049" />
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/df70b818-b76d-456b-b5c4-e3e77a75d64a" />
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/aaab6382-5db2-441e-80ed-cfa64af0ee78" />
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/b9679d5a-c305-40f4-b445-ae90b251b0bd" />
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/e707d9b2-aaab-4be9-be55-af104e4f88ba" />
+
 
 ---
 
